@@ -1,0 +1,22 @@
+<lift:surround with="default" at="content">
+    <h2>Series list</h2>
+    <lift:List_Series form="post">
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+            <series:list>
+                <tr>
+                    <td>
+                        <series:episodesLink/>
+                    </td>
+                    <td>
+                        <series:delete/>
+                    </td>
+                </tr>
+            </series:list>
+        </table>
+    </lift:List_Series>
+
+</lift:surround>

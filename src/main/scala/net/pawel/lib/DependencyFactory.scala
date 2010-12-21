@@ -1,4 +1,4 @@
-package code {
+package net.pawel {
 package lib {
 
 import net.liftweb._

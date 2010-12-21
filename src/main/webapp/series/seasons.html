@@ -1,0 +1,17 @@
+<lift:surround with="default" at="content">
+    <lift:List_Seasons>
+    <h2>Season list for <seasons:seriesName /></h2>
+        <table>
+            <tr>
+                <th>Season</th>
+                <th>Watched</th>
+            </tr>
+            <seasons:list>
+                <tr>
+                    <td><season:seasonLink /></td>
+                    <td><season:watched /></td>
+                </tr>
+            </seasons:list>
+        </table>
+    </lift:List_Seasons>
+</lift:surround>

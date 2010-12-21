@@ -1,9 +1,108 @@
 <lift:surround with="default" at="content">
-  <h2>Welcome to your project!</h2>
-  <p>
-    <lift:helloWorld.howdy>
-      <span>Welcome to your Lift app at <b:time/></span>
-    </lift:helloWorld.howdy>
-  </p>
+    <head>
+        <link rel="stylesheet" type="text/css" href="/css/style.css"/>
+    </head>
+    <lift:Next_Episodes_To_Watch form="get">
+        <h2>Recently aired</h2>
+        <table>
+            <tr>
+                <th>Series</th>
+                <th>Season</th>
+                <th>Episode</th>
+                <th>Aired</th>
+                <th>Name</th>
+                <th>Watched</th>
+            </tr>
+            <episodes:recently_aired>
+                <tr>
+                    <td>
+                        <episode:series_name/>
+                    </td>
+                    <td>
+                        <episode:season/>
+                    </td>
+                    <td>
+                        <episode:episode/>
+                    </td>
+                    <td>
+                        <episode:aired/>
+                    </td>
+                    <td>
+                        <episode:name/>
+                    </td>
+                    <td>
+                        <episode:watched/>
+                    </td>
+                </tr>
+            </episodes:recently_aired>
+        </table>
+        <h2>Unwatched episodes</h2>
+        <table>
+            <tr>
+                <th>Series</th>
+                <th>Season</th>
+                <th>Episode</th>
+                <th>Aired</th>
+                <th>Name</th>
+                <th>Watched</th>
+            </tr>
+            <episodes:unwatched>
+                <tr>
+                    <td>
+                        <episode:series_name/>
+                    </td>
+                    <td>
+                        <episode:season/>
+                    </td>
+                    <td>
+                        <episode:episode/>
+                    </td>
+                    <td>
+                        <episode:aired/>
+                    </td>
+                    <td>
+                        <episode:name/>
+                    </td>
+                    <td>
+                        <episode:watched/>
+                    </td>
+                </tr>
+            </episodes:unwatched>
+        </table>
+        <h2>Unaired episodes</h2>
+        <table>
+            <tr>
+                <th>Series</th>
+                <th>Season</th>
+                <th>Episode</th>
+                <th>Aired</th>
+                <th>Name</th>
+                <th>Watched</th>
+            </tr>
+            <episodes:unaired>
+                <tr>
+                    <td>
+                        <episode:series_name/>
+                    </td>
+                    <td>
+                        <episode:season/>
+                    </td>
+                    <td>
+                        <episode:episode/>
+                    </td>
+                    <td>
+                        <episode:aired/>
+                    </td>
+                    <td>
+                        <episode:name/>
+                    </td>
+                    <td>
+                        <episode:watched/>
+                    </td>
+                </tr>
+            </episodes:unaired>
+        </table>
+    </lift:Next_Episodes_To_Watch>
+    <lift:Update />
+    <script type="text/javascript" language="javascript" src="/js/script.js"></script>
 </lift:surround>
-
