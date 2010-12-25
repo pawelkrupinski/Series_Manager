@@ -30,7 +30,7 @@ object Settings {
 private class Test_Configuration extends AbstractModule {
   override protected def configure {
     bind(classOf[Database_Connection_Settings]).toInstance(Settings.in_memory_database_settings)
-    bind(classOf[WebDriver]).to_provider(Firefox_Driver _)
+    bind(classOf[WebDriver]).to_provider(Html_Unit_Driver _)
   }
 
   def Firefox_Driver = new FirefoxDriver(
