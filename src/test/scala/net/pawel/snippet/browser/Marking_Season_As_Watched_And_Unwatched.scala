@@ -19,7 +19,7 @@ class Marking_Season_As_Watched_And_Unwatched extends Uses_Integration_Configura
   var driver: WebDriver = _
 
   val series_name = "Earth: Final Conflict"
-  val series_id = "71784"
+  val series_id = "666"
 
   @After
   def close_browser {
