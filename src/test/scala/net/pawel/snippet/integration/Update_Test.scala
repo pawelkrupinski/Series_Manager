@@ -9,8 +9,9 @@ import collection.immutable.List
 import net.pawel.injection.Uses_Integration_Configuration
 import base.Prepare_Orm
 import net.pawel.snippet.Update
+import com.novocode.junit.TestMarker
 
-class Update_Test extends Uses_Integration_Configuration with Prepare_Orm {
+class Update_Test extends Uses_Integration_Configuration with Prepare_Orm with TestMarker {
 
   val update_service: Update = new Update
 
@@ -36,14 +37,14 @@ class Update_Test extends Uses_Integration_Configuration with Prepare_Orm {
     val fifth_episode: Episode = series.episodes(4)
     fifth_episode.delete_!
 
-    assertThat(series.episodes, is(episodes - fifth_episode))
+    assertThat(series.episodes, is(episodes.filterNot(_ == fifth_episode)))
 
     update_service.update
 
     val zipped: List[(Episode, Episode)] = episodes.zip(series.episodes)
     val significant_pair: (Episode, Episode) = zipped(4)
     val (expected_episode, actual_episode) = significant_pair
-    val (expected, actual) = (zipped - significant_pair).unzip
+    val (expected, actual) = (zipped.filterNot(_ == significant_pair)).unzip
     assertThat(actual, is(expected))
 
     assertThat(actual_episode.series_id.toString, is(expected_episode.series_id.toString))

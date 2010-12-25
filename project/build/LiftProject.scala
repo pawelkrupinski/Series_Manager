@@ -26,6 +26,11 @@ class LiftProject(info: ProjectInfo) extends DefaultWebProject(info) {
     "aopalliance" % "aopalliance" % "1.0",
     "org.seleniumhq.selenium" % "selenium" % "2.0a7" withSources,
     "org.seleniumhq.selenium" % "selenium-common" % "2.0a7" withSources,
-    "mysql" % "mysql-connector-java" % "5.1.13"
+    "mysql" % "mysql-connector-java" % "5.1.13",
+    "com.novocode" % "junit-interface" % "0.5" % "test->default"
   ) ++ super.libraryDependencies
+
+  override def testOptions =
+    super.testOptions ++
+    Seq(TestArgument(TestFrameworks.JUnit, "-q", "-v"))
 }

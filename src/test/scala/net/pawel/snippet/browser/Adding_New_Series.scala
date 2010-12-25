@@ -51,6 +51,5 @@ class Adding_New_Series extends Uses_Integration_Configuration with Start_Web_Se
     val season_links = driver.findElements(By.xpath("//*[contains(text(), 'Earth: Final Conflict Season')]"))
 
     assertThat(season_links.map(_.getText).toList, is((1 to 5).map("Earth: Final Conflict Season " + _).toList))
-
   }
 }

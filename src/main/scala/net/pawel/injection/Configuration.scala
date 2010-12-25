@@ -51,6 +51,12 @@ private class Production_Configuration extends AbstractModule {
   }
 }
 
+private class Local_Configuration extends Production_Configuration {
+  override protected def configure {
+    bind(classOf[Database_Connection_Settings]).toInstance(Settings.local_file_database_settings)
+  }
+}
+
 private class Integration_Configuration extends Test_Configuration {
   override protected def configure {
     super.configure

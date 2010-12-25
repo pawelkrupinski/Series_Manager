@@ -5,8 +5,9 @@ import org.hamcrest.CoreMatchers._
 import org.junit.{Assert, Test}
 import java.io.{InputStreamReader, BufferedReader, InputStream}
 import com.google.common.io.CharStreams
+import com.novocode.junit.TestMarker
 
-class Offline_Http_Test {
+class Offline_Http_Test extends TestMarker {
 
   @Test
   def Get_Series {
