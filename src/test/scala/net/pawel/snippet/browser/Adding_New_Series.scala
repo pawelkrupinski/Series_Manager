@@ -45,7 +45,7 @@ class Adding_New_Series extends Uses_Integration_Configuration with Start_Web_Se
     val series_name: WebElement = driver.findElement(By.id("series_name"))
     series_name.sendKeys("Earth: Final Conflict")
     driver.findElement(By.id("series_search_submit")).click
-    driver.findElement(By.id("71784")).click
+    wait_for(() => driver.findElement(By.id("71784"))).click
     wait_for(() => driver.findElement(By.xpath("//*[text()='Series list']")))
     driver.findElement(By.id("71784")).click
     val season_links = driver.findElements(By.xpath("//*[contains(text(), 'Earth: Final Conflict Season')]"))
