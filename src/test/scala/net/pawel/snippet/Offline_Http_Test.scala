@@ -11,7 +11,7 @@ class Offline_Http_Test extends TestMarker {
 
   @Test
   def Get_Series {
-    val result: InputStream = Offline_Http.get("GetSeries?rome")
+    val result: InputStream = Offline_Http.get("GetSeries?earth")
     Assert.assertThat(result, is(not(nullValue[InputStream])));
     val content: String = CharStreams.toString(new BufferedReader(new InputStreamReader(result)))
     println(content)

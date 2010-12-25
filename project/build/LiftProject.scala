@@ -1,4 +1,5 @@
 import sbt._
+import eu.henkelmann.sbt.JUnitXmlTestsListener
 
 class LiftProject(info: ProjectInfo) extends DefaultWebProject(info) {
   val liftVersion = "2.1"
@@ -12,6 +13,7 @@ class LiftProject(info: ProjectInfo) extends DefaultWebProject(info) {
 
   val repo = "Guice" at "http://guice-maven.googlecode.com/svn/trunk"
   val selenium = "Selenium" at "http://selenium.googlecode.com/svn/repository"
+  val christoph = "Christoph's Maven Repo" at "http://maven.henkelmann.eu/"
 
   override def libraryDependencies = Set(
     "net.liftweb" %% "lift-webkit" % liftVersion % "compile->default",
@@ -27,8 +29,13 @@ class LiftProject(info: ProjectInfo) extends DefaultWebProject(info) {
     "org.seleniumhq.selenium" % "selenium" % "2.0a7" withSources,
     "org.seleniumhq.selenium" % "selenium-common" % "2.0a7" withSources,
     "mysql" % "mysql-connector-java" % "5.1.13",
-    "com.novocode" % "junit-interface" % "0.5" % "test->default"
+    "com.novocode" % "junit-interface" % "0.5" % "test->default",
+    "eu.henkelmann" % "junit_xml_listener" % "0.1"
   ) ++ super.libraryDependencies
+
+  def junitXmlListener: TestReportListener = new JUnitXmlTestsListener(outputPath.toString)
+
+  override def testListeners: Seq[TestReportListener] = super.testListeners ++ Seq(junitXmlListener)
 
   override def testOptions =
     super.testOptions ++
