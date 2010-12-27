@@ -12,6 +12,8 @@ import org.openqa.selenium.ie.InternetExplorerDriver
 
 class Database_Connection_Settings(val driver: String, val url: String, val user: String, val password: String)
 
+case class ServerConfig(val port: Int)
+
 trait Uses_Integration_Configuration {
   Configuration.use_integration_configuration
 }
@@ -30,10 +32,18 @@ object Settings {
 
 private class Test_Configuration extends AbstractModule {
 
+  def getProperty(key: String) = System.getProperty(key) match {
+    case null => None
+    case string => Some(string)
+  }
+
   override protected def configure {
     bind(classOf[Database_Connection_Settings]).toInstance(Settings.in_memory_database_settings)
     bind(classOf[WebDriver]).to_provider(browser_provider)
+    bind(classOf[ServerConfig]).toInstance(server_config)
   }
+
+  val server_config = ServerConfig(getProperty("serverPort").map(_.toInt).getOrElse(8081))
 
   val browser_provider: (() => WebDriver) = System.getProperty("browser") match {
     case "firefox" => Firefox_Driver _

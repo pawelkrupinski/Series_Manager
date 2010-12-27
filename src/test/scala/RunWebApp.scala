@@ -5,10 +5,15 @@ import _root_.org.mortbay.jetty.Server
 import _root_.org.mortbay.jetty.webapp.WebAppContext
 import org.mortbay.jetty.nio._
 import actors.Actor
+import com.google.inject.Inject
+import pawel.injection.{ServerConfig, Injected}
 
-object RunWebApp {
+object RunWebApp extends Injected {
   val server = new Server
   var started = false
+
+  @Inject
+  var serverConfig: ServerConfig = _
 
   def stop_server = {
     server.stop()
@@ -21,7 +26,7 @@ object RunWebApp {
     }
     started = true
     val scc = new SelectChannelConnector
-    scc.setPort(8081)
+    scc.setPort(serverConfig.port)
     server.setConnectors(Array(scc))
 
     val context = new WebAppContext()
