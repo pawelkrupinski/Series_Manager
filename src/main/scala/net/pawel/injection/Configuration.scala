@@ -8,6 +8,7 @@ import net.pawel.model.Implicits._
 import java.io.File
 import org.openqa.selenium.firefox.{FirefoxProfile, FirefoxBinary, FirefoxDriver}
 import org.openqa.selenium.chrome.ChromeDriver
+import org.openqa.selenium.ie.InternetExplorerDriver
 
 class Database_Connection_Settings(val driver: String, val url: String, val user: String, val password: String)
 
@@ -28,9 +29,18 @@ object Settings {
 }
 
 private class Test_Configuration extends AbstractModule {
+
   override protected def configure {
     bind(classOf[Database_Connection_Settings]).toInstance(Settings.in_memory_database_settings)
-    bind(classOf[WebDriver]).to_provider(Html_Unit_Driver _)
+    bind(classOf[WebDriver]).to_provider(browser_provider)
+  }
+
+  val browser_provider: (() => WebDriver) = System.getProperty("browser") match {
+    case "firefox" => Firefox_Driver _
+    case "ie" => () => new InternetExplorerDriver
+    case "chrome" => () => new ChromeDriver
+    case "htmlunit" => Html_Unit_Driver _
+    case _ => Html_Unit_Driver _
   }
 
   def Firefox_Driver = new FirefoxDriver(
