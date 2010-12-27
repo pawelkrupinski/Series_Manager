@@ -37,15 +37,20 @@ private class Test_Configuration extends AbstractModule {
     case string => Some(string)
   }
 
+  def debug[T](message: String, value: T): T = {
+    println(String.format(message, value.asInstanceOf[Object]))
+    value
+  }
+
   override protected def configure {
     bind(classOf[Database_Connection_Settings]).toInstance(Settings.in_memory_database_settings)
     bind(classOf[WebDriver]).to_provider(browser_provider)
-    bind(classOf[ServerConfig]).toInstance(server_config)
+    bind(classOf[ServerConfig]).toInstance(debug("Server config: %s", server_config))
   }
 
   val server_config = ServerConfig(getProperty("serverPort").map(_.toInt).getOrElse(8081))
 
-  val browser_provider: (() => WebDriver) = System.getProperty("browser") match {
+  val browser_provider: (() => WebDriver) = debug("Browser: %s", System.getProperty("browser")) match {
     case "firefox" => Firefox_Driver _
     case "ie" => () => new InternetExplorerDriver
     case "chrome" => () => new ChromeDriver
