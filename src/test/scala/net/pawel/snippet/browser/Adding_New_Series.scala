@@ -32,7 +32,7 @@ class Adding_New_Series extends Uses_Integration_Configuration with Start_Web_Se
 
     driver.get(server_config.url);
     driver.findElement(By.xpath("//*[text()='Find series']")).click
-    val series_name: WebElement = driver.findElement(By.id("series_name"))
+    val series_name: WebElement = wait_for(() => driver.findElement(By.id("series_name")))
     series_name.click
     series_name.sendKeys("Earth: Final Conflict")
     driver.findElement(By.id("series_search_submit")).click
