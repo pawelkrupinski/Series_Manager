@@ -8,15 +8,18 @@ import org.junit.Assert._
 import net.pawel.model.Implicits._
 import org.hamcrest.CoreMatchers._
 import scala.collection.JavaConversions._
-import net.pawel.injection.{Uses_Offline_Configuration, Uses_Integration_Configuration, Injected}
 import org.hamcrest.CoreMatchers._
 import org.junit.{After, Test}
 import net.pawel.model.Series
+import net.pawel.injection.{Server_Config, Uses_Offline_Configuration, Uses_Integration_Configuration, Injected}
 
 class Marking_Season_As_Watched_And_Unwatched extends Uses_Integration_Configuration with Start_Web_Server with Injected with Browser_Test {
 
   @Inject
   var driver: WebDriver = _
+
+  @Inject
+  var server_config: Server_Config = _
 
   val series_name = "Earth: Final Conflict"
   val series_id = "71784"
@@ -30,7 +33,7 @@ class Marking_Season_As_Watched_And_Unwatched extends Uses_Integration_Configura
   def Marking_Season_As_Watched_Also_Marks_Previous_Seasons {
     Series_Service.create_series(Series_Service.find_series(series_name).head)
 
-    driver.get("http://localhost:8081/");
+    driver.get(server_config.url);
     driver.findElement(By.xpath("//*[text()='List series']")).click
     driver.findElement(By.id(series_id)).click
     val links = driver.findElements(By.xpath("//*[contains(text(), 'Earth: Final Conflict Season')]"))
@@ -47,7 +50,7 @@ class Marking_Season_As_Watched_And_Unwatched extends Uses_Integration_Configura
     series.season(5).sorted.last.mark_watched(true)
     assertTrue(series.episodes.forall(_.watched))
 
-    driver.get("http://localhost:8081/");
+    driver.get(server_config.url);
     driver.findElement(By.xpath("//*[text()='List series']")).click
     driver.findElement(By.id(series_id)).click
     val links = driver.findElements(By.xpath("//*[contains(text(), 'Earth: Final Conflict Season')]"))

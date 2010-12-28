@@ -12,7 +12,9 @@ import org.openqa.selenium.ie.InternetExplorerDriver
 
 class Database_Connection_Settings(val driver: String, val url: String, val user: String, val password: String)
 
-case class ServerConfig(val port: Int)
+case class Server_Config(val port: Int) {
+  val url = "http://localhost:%s/".format(port.toString)
+}
 
 trait Uses_Integration_Configuration {
   Configuration.use_integration_configuration
@@ -45,10 +47,10 @@ private class Test_Configuration extends AbstractModule {
   override protected def configure {
     bind(classOf[Database_Connection_Settings]).toInstance(Settings.in_memory_database_settings)
     bind(classOf[WebDriver]).to_provider(browser_provider)
-    bind(classOf[ServerConfig]).toInstance(debug("Server config: %s", server_config))
+    bind(classOf[Server_Config]).toInstance(debug("Server config: %s", server_config))
   }
 
-  val server_config = ServerConfig(getProperty("serverPort").map(_.toInt).getOrElse(8081))
+  val server_config = Server_Config(getProperty("serverPort").map(_.toInt).getOrElse(8081))
 
   val browser_provider: (() => WebDriver) = debug("Browser: %s", System.getProperty("browser")) match {
     case "firefox" => Firefox_Driver _

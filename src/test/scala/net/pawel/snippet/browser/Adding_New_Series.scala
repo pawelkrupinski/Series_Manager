@@ -11,12 +11,15 @@ import org.hamcrest.Matcher
 import base.Start_Web_Server
 import scala.collection.JavaConversions._
 import org.junit.{After, Test}
-import net.pawel.injection.{Uses_Offline_Configuration, Injected, Uses_Integration_Configuration}
+import net.pawel.injection.{Server_Config, Uses_Offline_Configuration, Injected, Uses_Integration_Configuration}
 
 class Adding_New_Series extends Uses_Integration_Configuration with Start_Web_Server with Injected with Browser_Test {
 
   @Inject
   var driver: WebDriver = _
+
+  @Inject
+  var server_config: Server_Config = _
 
   @After
   def close_browser {
@@ -27,7 +30,7 @@ class Adding_New_Series extends Uses_Integration_Configuration with Start_Web_Se
   def If_Series_Is_Already_Added_Does_Not_Show_Link_In_Search_Results {
     Series_Service.create_series(Series_Service.find_series("Earth: Final Conflict").head)
 
-    driver.get("http://localhost:8081/");
+    driver.get(server_config.url);
     driver.findElement(By.xpath("//*[text()='Find series']")).click
     val series_name: WebElement = driver.findElement(By.id("series_name"))
     series_name.sendKeys("Earth: Final Conflict")
@@ -40,7 +43,7 @@ class Adding_New_Series extends Uses_Integration_Configuration with Start_Web_Se
 
   @Test
   def Adding_New_Series {
-    driver.get("http://localhost:8081/");
+    driver.get(server_config.url);
     driver.findElement(By.xpath("//*[text()='Find series']")).click
     val series_name: WebElement = driver.findElement(By.id("series_name"))
     series_name.sendKeys("Earth: Final Conflict")
