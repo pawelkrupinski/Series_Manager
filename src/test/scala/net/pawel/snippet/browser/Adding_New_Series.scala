@@ -33,9 +33,11 @@ class Adding_New_Series extends Uses_Integration_Configuration with Start_Web_Se
     driver.get(server_config.url);
     driver.findElement(By.xpath("//*[text()='Find series']")).click
     val series_name: WebElement = driver.findElement(By.id("series_name"))
+    series_name.click
     series_name.sendKeys("Earth: Final Conflict")
     driver.findElement(By.id("series_search_submit")).click
 
+    driver.findElement(By.xpath("//*[text()='Series found for query \"Earth: Final Conflict\"']"))
     assertThat(driver.findElements(By.id("71784")).size, is(0))
   }
 
@@ -46,11 +48,14 @@ class Adding_New_Series extends Uses_Integration_Configuration with Start_Web_Se
     driver.get(server_config.url);
     driver.findElement(By.xpath("//*[text()='Find series']")).click
     val series_name: WebElement = driver.findElement(By.id("series_name"))
+    series_name.click
     series_name.sendKeys("Earth: Final Conflict")
+
     driver.findElement(By.id("series_search_submit")).click
     wait_for(() => driver.findElement(By.id("71784"))).click
     wait_for(() => driver.findElement(By.xpath("//*[text()='Series list']")))
     driver.findElement(By.id("71784")).click
+    wait_for(() => driver.findElements(By.xpath("//*[contains(text(), 'Earth: Final Conflict Season')]")))
     val season_links = driver.findElements(By.xpath("//*[contains(text(), 'Earth: Final Conflict Season')]"))
 
     assertThat(season_links.map(_.getText).toList, is((1 to 5).map("Earth: Final Conflict Season " + _).toList))
