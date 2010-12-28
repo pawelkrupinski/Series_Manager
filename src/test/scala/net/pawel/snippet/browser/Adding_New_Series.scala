@@ -15,17 +15,6 @@ import net.pawel.injection.{Server_Config, Uses_Offline_Configuration, Injected,
 
 class Adding_New_Series extends Uses_Integration_Configuration with Start_Web_Server with Injected with Browser_Test {
 
-  @Inject
-  var driver: WebDriver = _
-
-  @Inject
-  var server_config: Server_Config = _
-
-  @After
-  def close_browser {
-    driver.close
-  }
-
   @Test
   def If_Series_Is_Already_Added_Does_Not_Show_Link_In_Search_Results {
     Series_Service.create_series(Series_Service.find_series("Earth: Final Conflict").head)

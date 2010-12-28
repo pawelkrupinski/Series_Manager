@@ -15,19 +15,8 @@ import net.pawel.injection.{Server_Config, Uses_Offline_Configuration, Uses_Inte
 
 class Marking_Season_As_Watched_And_Unwatched extends Uses_Integration_Configuration with Start_Web_Server with Injected with Browser_Test {
 
-  @Inject
-  var driver: WebDriver = _
-
-  @Inject
-  var server_config: Server_Config = _
-
   val series_name = "Earth: Final Conflict"
   val series_id = "71784"
-
-  @After
-  def close_browser {
-    driver.close
-  }
 
   @Test
   def Marking_Season_As_Watched_Also_Marks_Previous_Seasons {
@@ -36,9 +25,8 @@ class Marking_Season_As_Watched_And_Unwatched extends Uses_Integration_Configura
     driver.get(server_config.url);
     driver.findElement(By.xpath("//*[text()='List series']")).click
     wait_for(() => driver.findElement(By.id(series_id))).click
-    val links = driver.findElements(By.xpath("//*[contains(text(), 'Earth: Final Conflict Season')]"))
 
-    driver.findElement(By.id(series_id + "_Season_3" )).click
+    wait_for(() => driver.findElement(By.id(series_id + "_Season_3" ))).click
     wait_for(() => (1 to 3).foreach(season => assertThat(driver.findElement(By.id(series_id + "_Season_" + season)).isSelected, is(true))))
     (4 to 5).foreach(season => assertThat(driver.findElement(By.id(series_id + "_Season_" + season)).isSelected, is(false)))
   }
@@ -53,7 +41,6 @@ class Marking_Season_As_Watched_And_Unwatched extends Uses_Integration_Configura
     driver.get(server_config.url);
     driver.findElement(By.xpath("//*[text()='List series']")).click
     driver.findElement(By.id(series_id)).click
-    val links = driver.findElements(By.xpath("//*[contains(text(), 'Earth: Final Conflict Season')]"))
 
     driver.findElement(By.id(series_id + "_Season_3" )).click
     wait_for(() => (1 to 2).foreach(season => assertThat("Season " + season + " should be marked as watched.",
