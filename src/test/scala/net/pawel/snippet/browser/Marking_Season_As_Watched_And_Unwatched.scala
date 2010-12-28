@@ -35,7 +35,7 @@ class Marking_Season_As_Watched_And_Unwatched extends Uses_Integration_Configura
 
     driver.get(server_config.url);
     driver.findElement(By.xpath("//*[text()='List series']")).click
-    driver.findElement(By.id(series_id)).click
+    wait_for(() => driver.findElement(By.id(series_id))).click
     val links = driver.findElements(By.xpath("//*[contains(text(), 'Earth: Final Conflict Season')]"))
 
     driver.findElement(By.id(series_id + "_Season_3" )).click
