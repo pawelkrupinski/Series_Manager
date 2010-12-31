@@ -27,8 +27,8 @@ class Marking_Season_As_Watched_And_Unwatched extends Uses_Integration_Configura
     wait_for(() => driver.findElement(By.id(series_id))).click
 
     wait_for(() => driver.findElement(By.id(series_id + "_Season_3" ))).click
-    (1 to 3).foreach(season => assertThat(driver.findElement(By.id(series_id + "_Season_" + season)).isSelected, is(true)))
-    (4 to 5).foreach(season => assertThat(driver.findElement(By.id(series_id + "_Season_" + season)).isSelected, is(false)))
+    (1 to 3).foreach(season => wait_for(() => assertThat(driver.findElement(By.id(series_id + "_Season_" + season)).isSelected, is(true))))
+    (4 to 5).foreach(season => wait_for(() => assertThat(driver.findElement(By.id(series_id + "_Season_" + season)).isSelected, is(false))))
   }
 
   @Test
