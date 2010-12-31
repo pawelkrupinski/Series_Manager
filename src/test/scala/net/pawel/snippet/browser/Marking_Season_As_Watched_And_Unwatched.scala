@@ -27,7 +27,8 @@ class Marking_Season_As_Watched_And_Unwatched extends Uses_Integration_Configura
     wait_for(() => driver.findElement(By.id(series_id))).click
 
     wait_for(() => driver.findElement(By.id(series_id + "_Season_3" ))).click
-    wait_for(() => (1 to 3).foreach(season => assertThat(driver.findElement(By.id(series_id + "_Season_" + season)).isSelected, is(true))))
+    wait_for(() => driver.findElement(By.id(series_id + "_Season_1")))
+    (1 to 3).foreach(season => assertThat(driver.findElement(By.id(series_id + "_Season_" + season)).isSelected, is(true)))
     (4 to 5).foreach(season => assertThat(driver.findElement(By.id(series_id + "_Season_" + season)).isSelected, is(false)))
   }
 
@@ -43,10 +44,11 @@ class Marking_Season_As_Watched_And_Unwatched extends Uses_Integration_Configura
     driver.findElement(By.id(series_id)).click
 
     driver.findElement(By.id(series_id + "_Season_3" )).click
-    wait_for(() => (1 to 2).foreach(season => assertThat("Season " + season + " should be marked as watched.",
-      driver.findElement(By.id(series_id + "_Season_" + season)).isSelected, is(true))))
-    wait_for(() => (3 to 5).foreach(season => assertThat("Season " + season + " should be marked as unwatched.",
-      driver.findElement(By.id(series_id + "_Season_" + season)).isSelected, is(false))))
+    wait_for(() => driver.findElement(By.id(series_id + "_Season_1")))
+    (1 to 2).foreach(season => assertThat("Season " + season + " should be marked as watched.",
+      driver.findElement(By.id(series_id + "_Season_" + season)).isSelected, is(true)))
+    (3 to 5).foreach(season => assertThat("Season " + season + " should be marked as unwatched.",
+      driver.findElement(By.id(series_id + "_Season_" + season)).isSelected, is(false)))
   }
 
 }
