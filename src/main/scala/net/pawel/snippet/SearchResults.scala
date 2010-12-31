@@ -18,9 +18,7 @@ class SearchResults {
 
   def render(in: NodeSeq) = {
     val nameParameter: Box[String] = S.param("name")
-    val query = nameParameter match {
-      case box: Box[String] => box.open_!
-    }
+    val query = nameParameter.getOrElse("")
     bind("series", in,
       "query" -> query,
       "results" -> result(query)
