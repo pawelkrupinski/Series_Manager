@@ -26,7 +26,7 @@ class Adding_New_Series extends Uses_Integration_Configuration with Start_Web_Se
     series_name.sendKeys("Earth: Final Conflict")
     driver.findElement(By.id("series_search_submit")).click
 
-    driver.findElement(By.xpath("//*[text()='Series found for query \"Earth: Final Conflict\"']"))
+    wait_for(() => driver.findElement(By.xpath("//*[text()='Series found for query \"Earth: Final Conflict\"']")))
     assertThat(driver.findElements(By.id("71784")).size, is(0))
   }
 
