@@ -13,7 +13,7 @@ import net.pawel.services.Series_Service
 import net.pawel.injection.Injected
 import com.google.inject.Inject
 
-class List_Episodes extends Injected with Episode_Binding {
+class List_Episodes extends Injected with Episode_Binding with Series_Link{
 
   def render(in: NodeSeq) = {
     val series: Series = Series.find_by_id(S.param("series_id").open_!.toLong).open_!
@@ -21,7 +21,7 @@ class List_Episodes extends Injected with Episode_Binding {
     val episodes = series.season(season_number).sortBy(_.number.toString.toInt)
 
     bind("episodes", in,
-      "seriesName" -> series.name,
+      "seriesName" -> series_link(series),
       "season" -> season_number,
       "list" -> bindEpisodes(episodes) _)
   }

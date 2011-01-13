@@ -1,7 +1,7 @@
 import sbt._
 
 class LiftProject(info: ProjectInfo) extends DefaultWebProject(info) {
-  val liftVersion = "2.1"
+  val liftVersion = "2.2"
 
   // uncomment the following if you want to use the snapshot repo
   //val scalatoolsSnapshot = ScalaToolsSnapshots
@@ -19,7 +19,7 @@ class LiftProject(info: ProjectInfo) extends DefaultWebProject(info) {
     "net.liftweb" %% "lift-mapper" % liftVersion % "compile->default",
     "org.mortbay.jetty" % "jetty" % "6.1.22" % "test->default",
     "junit" % "junit" % "4.5" % "test->default",
-    "org.scala-tools.testing" %% "specs" % "1.6.5" % "test->default",
+    "org.scala-tools.testing" %% "specs" % "1.6.6" % "test->default",
     "com.h2database" % "h2" % "1.2.138",
     "com.google.guava" % "guava" % "r07",
     "org.squeryl" % "squeryl_2.8.1" % "0.9.4-RC3",
