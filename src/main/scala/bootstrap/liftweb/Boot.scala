@@ -1,6 +1,7 @@
 package bootstrap.liftweb
 
 import net.liftweb._
+import db.ProtoDBVendor
 import util._
 import common._
 import http._

@@ -1,7 +1,7 @@
 import sbt._
 
-class LiftProject(info: ProjectInfo) extends DefaultWebProject(info) {
-  val liftVersion = "2.2"
+class LiftProject(info: ProjectInfo) extends DefaultWebProject(info) with IdeaProject {
+  val liftVersion = "2.3"
 
   // uncomment the following if you want to use the snapshot repo
   //val scalatoolsSnapshot = ScalaToolsSnapshots
@@ -11,7 +11,7 @@ class LiftProject(info: ProjectInfo) extends DefaultWebProject(info) {
   // override def scanDirectories = Nil
 
   val repo = "Guice" at "http://guice-maven.googlecode.com/svn/trunk"
-  val selenium = "Selenium" at "http://selenium.googlecode.com/svn/repository"
+  val selenium = "Selenium" at "http://repo1.maven.org/maven2"
   val christoph = "Christoph's Maven Repo" at "http://maven.henkelmann.eu/"
 
   override def libraryDependencies = Set(
@@ -21,12 +21,12 @@ class LiftProject(info: ProjectInfo) extends DefaultWebProject(info) {
     "junit" % "junit" % "4.5" % "test->default",
     "org.scala-tools.testing" %% "specs" % "1.6.6" % "test->default",
     "com.h2database" % "h2" % "1.2.138",
-    "com.google.guava" % "guava" % "r07",
+    "com.google.guava" % "guava" % "r09",
     "org.squeryl" % "squeryl_2.8.1" % "0.9.4-RC3",
     "com.google.code.guice" % "guice" % "2.0.1",
     "aopalliance" % "aopalliance" % "1.0",
-    "org.seleniumhq.selenium" % "selenium" % "2.0a7" withSources,
-    "org.seleniumhq.selenium" % "selenium-common" % "2.0a7" withSources,
+    "org.seleniumhq.selenium" % "selenium" % "2.0rc2",
+    //"org.seleniumhq.selenium" % "selenium-common" % "2.0b1" withSources,
     "mysql" % "mysql-connector-java" % "5.1.13",
     "com.novocode" % "junit-interface" % "0.5" % "test->default"
   ) ++ super.libraryDependencies
