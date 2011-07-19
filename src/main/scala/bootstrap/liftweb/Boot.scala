@@ -31,8 +31,8 @@ object Boot extends Injected {
       val vendor = new StandardDBVendor(
         Props.get("db.driver") openOr database_settings.driver,
         Props.get("db.url") openOr database_settings.url,
-        Full(database_settings.user),
-        Full(database_settings.password))
+        database_settings.user,
+        database_settings.password)
 
       DB.defineConnectionManager(DefaultConnectionIdentifier, vendor)
       set_vendor(vendor)

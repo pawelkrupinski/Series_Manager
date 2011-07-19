@@ -1,4 +1,6 @@
 # use glob syntax.
+src/main/resources/props/prod.props
+
 syntax: glob
 *.ser
 *.class

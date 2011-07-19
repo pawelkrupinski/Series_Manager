@@ -1,16 +1,18 @@
 package net.pawel.injection
 
-import com.google.inject.{Module, AbstractModule, Guice, Injector}
 import net.pawel.services.{Offline_Http, Http}
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.htmlunit.HtmlUnitDriver
 import net.pawel.model.Implicits._
-import java.io.File
 import org.openqa.selenium.firefox.{FirefoxProfile, FirefoxBinary, FirefoxDriver}
 import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.ie.InternetExplorerDriver
+import net.liftweb.util.Props
+import java.io.{FileInputStream, File}
+import net.liftweb.common.{Box, Full}
+import com.google.inject._
 
-class Database_Connection_Settings(val driver: String, val url: String, val user: String, val password: String)
+class Database_Connection_Settings(val driver: String, val url: String, val user: Box[String], val password: Box[String])
 
 case class Server_Config(val port: Int) {
   val url = "http://localhost:%s/".format(port.toString)
@@ -25,11 +27,12 @@ trait Uses_Offline_Configuration {
 }
 
 object Settings {
-  val prod_database_settings = new Database_Connection_Settings("com.mysql.jdbc.Driver",
-    "jdbc:mysql://ec2-174-129-9-255.compute-1.amazonaws.com:3306/series", "series", "series")
-  val local_file_database_settings = new Database_Connection_Settings("org.h2.Driver",
-    "jdbc:h2:lift_proto.db;AUTO_SERVER=TRUE", null, null)
-  val in_memory_database_settings = new Database_Connection_Settings("org.h2.Driver", "jdbc:h2:mem:", null, null)
+  def setProps(fileName: String) {
+    Props.whereToLook = () => List(("local", () => Full(classOf[Database_Connection_Settings].getResourceAsStream(fileName))))
+  }
+
+  lazy val database_settings = new Database_Connection_Settings(Props.get("db.driver.class").openTheBox,
+    Props.get("db.url").openTheBox, Props.get("db.username"), Props.get("db.password"))
 }
 
 private class Test_Configuration extends AbstractModule {
@@ -45,7 +48,8 @@ private class Test_Configuration extends AbstractModule {
   }
 
   override protected def configure {
-    bind(classOf[Database_Connection_Settings]).toInstance(Settings.in_memory_database_settings)
+    Settings.setProps("/props/test.props")
+    bind(classOf[Database_Connection_Settings]).toInstance(Settings.database_settings)
     bind(classOf[WebDriver]).to_provider(browser_provider)
     bind(classOf[Server_Config]).toInstance(debug("Server config: %s", server_config))
   }
@@ -73,14 +77,17 @@ private class Test_Configuration extends AbstractModule {
 
 private class Production_Configuration extends AbstractModule {
   override protected def configure {
-    bind(classOf[Database_Connection_Settings]).toInstance(Settings.prod_database_settings)
+    Settings.setProps("/props/prod.props")
+    bind(classOf[Database_Connection_Settings]).toInstance(Settings.database_settings)
     bind(classOf[Http]).toInstance(Http)
   }
 }
 
-private class Local_Configuration extends Production_Configuration {
+private class Local_Configuration extends AbstractModule {
   override protected def configure {
-    bind(classOf[Database_Connection_Settings]).toInstance(Settings.local_file_database_settings)
+    Settings.setProps("/props/local.props")
+    bind(classOf[Database_Connection_Settings]).toInstance(Settings.database_settings)
+    bind(classOf[Http]).toInstance(Http)
   }
 }
 
@@ -99,7 +106,7 @@ private class Offline_Configuration extends Test_Configuration {
 }
 
 object Configuration {
-  var module: Module = new Production_Configuration
+  var module: Module = new Local_Configuration
 
   def use_integration_configuration {
     module = new Integration_Configuration
