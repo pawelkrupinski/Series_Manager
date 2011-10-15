@@ -1,5 +1,6 @@
 package net.pawel.snippet
 
+import main_page.Episode_Binding
 import xml.NodeSeq
 import java.util.Date
 import org.joda.time.DateTime
@@ -17,7 +18,6 @@ class Next_Episodes_To_Watch extends Episode_Binding {
 
     bind("episodes", in,
       "unwatched" -> bindEpisodes(old_unwatched.sorted) _,
-      "recently_aired" -> bindEpisodes(recently_aired) _,
       "unaired" -> bindEpisodes(unaired.sortWith((e1, e2) => if (e1.aired.toString == "NULL") false
         else if (e2.aired.toString == "NULL") true
         else e1.aired.compareTo(e2.aired) < 0)) _)

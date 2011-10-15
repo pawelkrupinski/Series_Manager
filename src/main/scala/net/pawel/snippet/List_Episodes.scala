@@ -1,5 +1,6 @@
 package net.pawel.snippet
 
+import main_page.Episode_Binding
 import net.liftweb.util.Helpers._
 import net.liftweb.http.SHtml._
 import net.liftweb.http.S

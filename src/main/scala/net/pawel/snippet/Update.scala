@@ -16,7 +16,7 @@ class Update {
 
   def updateSeries(series: Series): List[Episode] = {
     println("Updating " + series.name)
-    val existing_episodes = series.episodes.map(e => (e.episode_id, e)).toMap
+    val existing_episodes = series.episodes.map(e => (e.episode_id.get, e)).toMap
     val online_episodes = fetch_episodes(series)
 
     def updateEpisode(online_episode: Episode): Option[Episode] =

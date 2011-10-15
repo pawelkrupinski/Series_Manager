@@ -18,13 +18,9 @@ object Boot extends Injected {
   @Inject
   var database_settings: Database_Connection_Settings = _
 
-  def schemify = {
-    Schemifier.schemify(true, Schemifier.infoF _, User, Series, Episode)
-  }
+  def schemify = Schemifier.schemify(true, Schemifier.infoF _, User, Series, Episode)
 
-  def destroy {
-    Schemifier.destroyTables_!!(Schemifier.infoF _, User, Series, Episode)
-  }
+  def destroy = Schemifier.destroyTables_!!(Schemifier.infoF _, User, Series, Episode)
 
   def set_up_orm(set_vendor: ProtoDBVendor => Unit) {
     if (!DB.jndiJdbcConnAvailable_?) {

@@ -1,6 +1,5 @@
 package net.pawel.snippet.browser
 
-import base.Start_Web_Server
 import net.pawel.services.Series_Service
 import com.google.inject.Inject
 import org.openqa.selenium.{WebDriver, WebElement, By}
@@ -12,8 +11,12 @@ import org.hamcrest.CoreMatchers._
 import org.junit.{After, Test}
 import net.pawel.model.Series
 import net.pawel.injection.{Server_Config, Uses_Offline_Configuration, Uses_Integration_Configuration, Injected}
+import base.{Prepare_Orm, Start_Web_Server}
 
-class Marking_Season_As_Watched_And_Unwatched extends Uses_Integration_Configuration with Start_Web_Server with Injected with Browser_Test {
+class Marking_Season_As_Watched_And_Unwatched extends Uses_Integration_Configuration
+                                              with Prepare_Orm
+                                              with Start_Web_Server
+                                              with Injected with Browser_Test {
 
   val series_name = "Earth: Final Conflict"
   val series_id = "71784"

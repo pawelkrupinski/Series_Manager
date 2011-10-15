@@ -19,7 +19,7 @@ object XmlSourceSpecs extends Specification {
 		  /**
 		   * Tests to make sure the project's XML files are well-formed.
 		   *
-		   * Finds every *.html and *.xml file in src/main/webapp (and its
+		   * Finds every *.html and *.xml file in src/main_page/webapp (and its
 		   * subdirectories) and tests to make sure they are well-formed.
 		   */
 	    var failed: List[File] = Nil
@@ -49,7 +49,7 @@ object XmlSourceSpecs extends Specification {
 	      }
 	    }
 
-	    wellFormed(new File("src/main/webapp"))
+	    wellFormed(new File("src/main_page/webapp"))
 
 	    val numFails = failed.size
 	    if (numFails > 0) {

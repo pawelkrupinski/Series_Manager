@@ -1,19 +1,20 @@
 package net.pawel.snippet.browser
 
-import org.openqa.selenium.{By, WebElement, WebDriver}
-import org.openqa.selenium.htmlunit.HtmlUnitDriver
+import org.openqa.selenium.{By, WebElement}
 import org.junit.Assert._
 import org.hamcrest.CoreMatchers._
-import org.openqa.selenium.chrome.ChromeDriver
-import net.pawel.services.Series_Service
-import com.google.inject.Inject
 import org.hamcrest.Matcher
-import base.Start_Web_Server
+import org.junit.Test
+import net.pawel.services.Series_Service
 import scala.collection.JavaConversions._
-import org.junit.{After, Test}
-import net.pawel.injection.{Server_Config, Uses_Offline_Configuration, Injected, Uses_Integration_Configuration}
+import net.pawel.injection.{Injected, Uses_Integration_Configuration}
+import base.{Prepare_Orm, Start_Web_Server}
 
-class Adding_New_Series extends Uses_Integration_Configuration with Start_Web_Server with Injected with Browser_Test {
+class Adding_New_Series extends Uses_Integration_Configuration
+                        with Injected
+                        with Browser_Test
+                        with Prepare_Orm
+                        with Start_Web_Server {
 
   @Test
   def If_Series_Is_Already_Added_Does_Not_Show_Link_In_Search_Results {
