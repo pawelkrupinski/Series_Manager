@@ -13,7 +13,6 @@ import base.{Prepare_Orm, Start_Web_Server}
 class Adding_New_Series extends Uses_Integration_Configuration
                         with Injected
                         with Browser_Test
-                        with Prepare_Orm
                         with Start_Web_Server {
 
   @Test

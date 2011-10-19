@@ -5,77 +5,19 @@
 
     <div class="lift:Recently_Aired?eager_eval=true">
         <h2>Recently aired</h2>
-         <lift:embed what="/episodes" />
+        <lift:embed what="/episodes" />
     </div>
 
-    <lift:Next_Episodes_To_Watch form="get">
+    <div class="lift:Unwatched?eager_eval=true">
         <h2>Unwatched episodes</h2>
-        <table>
-            <tr>
-                <th>Series</th>
-                <th>Season</th>
-                <th>Episode</th>
-                <th>Aired</th>
-                <th>Name</th>
-                <th>Watched</th>
-            </tr>
-            <episodes:unwatched>
-                <tr>
-                    <td>
-                        <episode:series_name/>
-                    </td>
-                    <td>
-                        <episode:season/>
-                    </td>
-                    <td>
-                        <episode:episode/>
-                    </td>
-                    <td>
-                        <episode:aired/>
-                    </td>
-                    <td>
-                        <episode:name/>
-                    </td>
-                    <td>
-                        <episode:watched/>
-                    </td>
-                </tr>
-            </episodes:unwatched>
-        </table>
+        <lift:embed what="/episodes" />
+    </div>
+
+    <div class="lift:Unaired?eager_eval=true">
         <h2>Unaired episodes</h2>
-        <table>
-            <tr>
-                <th>Series</th>
-                <th>Season</th>
-                <th>Episode</th>
-                <th>Aired</th>
-                <th>Name</th>
-                <th>Watched</th>
-            </tr>
-            <episodes:unaired>
-                <tr>
-                    <td>
-                        <episode:series_name/>
-                    </td>
-                    <td>
-                        <episode:season/>
-                    </td>
-                    <td>
-                        <episode:episode/>
-                    </td>
-                    <td>
-                        <episode:aired/>
-                    </td>
-                    <td>
-                        <episode:name/>
-                    </td>
-                    <td>
-                        <episode:watched/>
-                    </td>
-                </tr>
-            </episodes:unaired>
-        </table>
-    </lift:Next_Episodes_To_Watch>
+        <lift:embed what="/episodes" />
+    </div>
+
     <lift:Update />
     <script type="text/javascript" language="javascript" src="/js/script.js"></script>
 </lift:surround>

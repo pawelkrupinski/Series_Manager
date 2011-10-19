@@ -32,7 +32,7 @@ object RunWebApp extends Injected {
     val context = new WebAppContext()
     context.setServer(server)
     context.setContextPath("/")
-    context.setWar("src/main_page/webapp")
+    context.setWar("src/main/webapp")
 
     server.addHandler(context)
 

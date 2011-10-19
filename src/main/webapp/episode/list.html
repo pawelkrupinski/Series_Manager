@@ -2,36 +2,9 @@
     <head>
         <link rel="stylesheet" type="text/css" href="/css/style.css"/>
     </head>
-    <lift:List_Episodes form="get">
-        <h2>Series: <episodes:seriesName/><br />Season: <episodes:season/></h2>
-        <table>
-            <tr>
-                <th>Season</th>
-                <th>Episode</th>
-                <th>Aired</th>
-                <th>Name</th>
-                <th>Watched</th>
-            </tr>
-            <episodes:list>
-                <tr>
-                    <td>
-                        <episode:season/>
-                    </td>
-                    <td>
-                        <episode:episode/>
-                    </td>
-                    <td>
-                        <episode:aired/>
-                    </td>
-                    <td>
-                        <episode:name/>
-                    </td>
-                    <td>
-                        <episode:watched/>
-                    </td>
-                </tr>
-            </episodes:list>
-        </table>
-    </lift:List_Episodes>
+    <div class="lift:List_Episodes?eager_eval=true">
+        <h2>Series: <span class="seriesName" /><br />Season: <span class="season" /></h2>
+        <lift:embed what="/episodes" />
+    </div>
     <script type="text/javascript" language="javascript" src="/js/script.js"></script>
 </lift:surround>

@@ -31,7 +31,7 @@ trait Browser_Test extends TestMarker {
       try {
         return condition.apply
       } catch {
-        case _ => Thread.sleep(100)
+        case _ => Thread.sleep(500)
       }
     }
     throw new AssertionFailedError("Wait has timed out")

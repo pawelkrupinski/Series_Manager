@@ -49,7 +49,7 @@ object XmlSourceSpecs extends Specification {
 	      }
 	    }
 
-	    wellFormed(new File("src/main_page/webapp"))
+	    wellFormed(new File("src/main/webapp"))
 
 	    val numFails = failed.size
 	    if (numFails > 0) {

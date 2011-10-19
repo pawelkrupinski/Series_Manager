@@ -2,7 +2,6 @@ package bootstrap.liftweb
 
 import net.liftweb._
 import db.ProtoDBVendor
-import util._
 import common._
 import http._
 import sitemap._
@@ -13,6 +12,7 @@ import net.pawel.snippet._
 import com.google.inject.Inject
 import net.pawel.injection.{Database_Connection_Settings, Injected}
 import actors.Actor
+import util._
 
 object Boot extends Injected {
   @Inject
@@ -24,6 +24,7 @@ object Boot extends Injected {
 
   def set_up_orm(set_vendor: ProtoDBVendor => Unit) {
     if (!DB.jndiJdbcConnAvailable_?) {
+      println("DB Driver: " + Props.get("db.url"))
       val vendor = new StandardDBVendor(
         Props.get("db.driver") openOr database_settings.driver,
         Props.get("db.url") openOr database_settings.url,

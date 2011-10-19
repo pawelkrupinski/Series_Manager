@@ -37,10 +37,7 @@ object Settings {
 
 private class Test_Configuration extends AbstractModule {
 
-  def getProperty(key: String) = System.getProperty(key) match {
-    case null => None
-    case string => Some(string)
-  }
+  def getProperty(key: String) = Option(System.getProperty(key))
 
   def debug[T](message: String, value: T): T = {
     println(String.format(message, value.asInstanceOf[Object]))

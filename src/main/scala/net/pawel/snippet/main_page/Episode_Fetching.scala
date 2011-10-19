@@ -16,6 +16,8 @@ trait Episode_Fetching {
   val aired_less_than_month_ago: (Episode) => Boolean = !aired_more_than_month_ago(_)
 
   def recently_aired_episodes: List[Episode] = episodes.filter(unwatched).filter(aired_less_than_month_ago)
+  def unwatched_episodes: List[Episode] = episodes.filter(unwatched).filter(aired_more_than_month_ago)
+  def unaired_episodes: List[Episode] = episodes.filter(unaired)
 
   def episodes: List[Episode] = Episode.find_unwatched.groupBy(_.series_id.toLong).iterator
     .map((t: (Long, List[Episode])) => t._2.sortBy(e => e.season * 1000 + e.number).take(2)).toList.flatten
