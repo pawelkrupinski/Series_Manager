@@ -3,10 +3,9 @@ package net.pawel.services
 import net.pawel.model.{Episode, Series}
 import java.io.StringReader
 import java.lang.String
-import java.util.Date
 import net.pawel.injection.Injected
 import com.google.inject.Inject
-import xml.{Elem, NodeSeq, XML}
+import xml.XML
 
 object Series_Service extends Injected {
 

@@ -1,22 +1,29 @@
-<lift:surround with="default" at="content">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
+    <title>Home</title>
+</head>
+<body class="lift:content_id=main">
+<div id="main" class="lift:surround?with=default;at=content">
     <h2>Series list</h2>
-    <lift:List_Series form="post">
+    <div class="lift:List_Series">
         <table>
             <tr>
                 <th>Name</th>
                 <th>Actions</th>
             </tr>
-            <series:list>
-                <tr>
-                    <td>
-                        <series:episodesLink/>
-                    </td>
-                    <td>
-                        <series:delete/>
-                    </td>
-                </tr>
-            </series:list>
+            <tr class="list">
+                <td>
+                    <a class="episodesLink" />
+                </td>
+                <td>
+                    <input class="delete" />
+                </td>
+            </tr>
         </table>
-    </lift:List_Series>
-
-</lift:surround>
+    </div>
+</div>
+</body>
+</html>

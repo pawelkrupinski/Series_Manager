@@ -1,10 +1,8 @@
 package net.pawel.services
 
-import com.google.common.io.CharStreams
 import xml.XML
-import io.BufferedSource
 import java.lang.String
-import java.io.{StringReader, InputStream, BufferedReader, InputStreamReader}
+import java.io.InputStream
 
 trait Http {
   def get(urlString: String): InputStream
