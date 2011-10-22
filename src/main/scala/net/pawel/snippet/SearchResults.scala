@@ -25,7 +25,7 @@ class SearchResults {
   def result(query: String) = ".result" #> seriesRows(query)
 
   def seriesRows(query: String) = {
-    val series = find_series(query)
+    val series = find_series(query).sortBy(_.name.get)
     series.map(seriesRow(_))
   }
 
