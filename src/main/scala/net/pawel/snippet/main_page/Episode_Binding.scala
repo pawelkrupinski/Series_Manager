@@ -5,9 +5,10 @@ import net.liftweb.http.SHtml._
 import net.pawel.model.Episode
 import net.liftweb.http.js.JsCmds
 import xml._
-import net.pawel.snippet.List_Seasons._
+import net.pawel.snippet.Season_Link
 
-trait Episode_Binding {
+trait Episode_Binding extends Season_Link{
+  
   def bindEpisodesCss(episodes: List[Episode]) = episodes.map(episode =>
     ( ".season" #> episode.season
     & ".episode" #> episode.number

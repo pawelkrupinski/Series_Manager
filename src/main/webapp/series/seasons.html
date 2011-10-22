@@ -1,17 +1,25 @@
-<lift:surround with="default" at="content">
-    <lift:List_Seasons>
-    <h2>Season list for <seasons:seriesName /></h2>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
+    <title>Home</title>
+</head>
+<body class="lift:content_id=main">
+<div id="main" class="lift:surround?with=default;at=content">
+    <div class="lift:List_Seasons">
+    <h2>Season list for <span class="seriesName" /></h2>
         <table>
             <tr>
                 <th>Season</th>
                 <th>Watched</th>
             </tr>
-            <seasons:list>
-                <tr>
-                    <td><season:seasonLink /></td>
-                    <td><season:watched /></td>
-                </tr>
-            </seasons:list>
+            <tr id="seasons">
+                <td class="seasonLink" />
+                <td class="watched" />
+            </tr>
         </table>
-    </lift:List_Seasons>
-</lift:surround>
+    </div>
+</div>
+</body>
+</html>
