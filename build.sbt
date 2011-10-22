@@ -12,15 +12,9 @@ resolvers += "Christoph's Maven Repo" at "http://maven.henkelmann.eu/"
 
 resolvers += "Web plugin repo" at "http://siasia.github.com/maven2"
 
-resolvers += "sbt-idea-repo" at "http://mpeltonen.github.com/maven/"
-
 seq(webSettings: _*)
 
 libraryDependencies += "org.mortbay.jetty" % "jetty" % "6.1.26" % "container"
-
-libraryDependencies <+= sbtVersion(v => "com.github.siasia" %% "xsbt-web-plugin" % (v+"-0.2.7"))
-
-addSbtPlugin("com.github.mpeltonen" % "sbt-idea" % "0.11.0")
 
 libraryDependencies ++= {
   val liftVersion = "2.4-M4" // Put the current/latest lift version here
