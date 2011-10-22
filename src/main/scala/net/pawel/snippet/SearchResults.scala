@@ -16,16 +16,13 @@ import net.pawel.services.Series_Service._
 
 class SearchResults {
 
-  def render(in: NodeSeq) = {
+  def render = {
     val nameParameter: Box[String] = S.param("name")
     val query = nameParameter.getOrElse("")
-    bind("series", in,
-      "query" -> query,
-      "results" -> result(query)
-    )
+    ".query" #> query & ".results *" #> result(query)
   }
 
-  def result(query: String): (NodeSeq => NodeSeq) = xhtml => bind("series", xhtml, "result" -> seriesRows(query))
+  def result(query: String) = ".result" #> seriesRows(query)
 
   def seriesRows(query: String) = {
     val series = find_series(query)
