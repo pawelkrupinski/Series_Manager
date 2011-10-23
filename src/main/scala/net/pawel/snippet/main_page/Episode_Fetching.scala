@@ -10,7 +10,7 @@ trait Episode_Fetching {
   def now = new DateTime
   def month_ago = now.minusMonths(1)
 
-  val unaired: (Episode) => Boolean = episode => Option(episode.aired.get).map(_.isAfter(now)).getOrElse(false)
+  val unaired: (Episode) => Boolean = episode => Option(episode.aired.is).map(_.isAfter(now)).getOrElse(true)
   val unwatched: (Episode) => Boolean = !unaired(_)
   val aired_more_than_month_ago: (Episode) => Boolean = _.aired.get.isBefore(month_ago)
   val aired_less_than_month_ago: (Episode) => Boolean = !aired_more_than_month_ago(_)
