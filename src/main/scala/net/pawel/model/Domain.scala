@@ -10,11 +10,11 @@ class Series extends LongKeyedMapper[Series] with IdPK {
     def getSingleton = Series
     object name extends MappedPoliteString(this, 128)
     object series_id extends MappedLong(this)
+    object active extends MappedBoolean(this)
     def episodes: List[Episode] = Episode.find_by_series_id(series_id)
     def season(season: Int): List[Episode] = Episode.find_by_series_id_and_season(series_id, season)
 
     def delete {
-      val series_id = this.series_id
       episodes.foreach(_.delete_!)
       delete_!
     }
@@ -24,7 +24,7 @@ class Series extends LongKeyedMapper[Series] with IdPK {
 }
 
 object Series extends Series with LongKeyedMetaMapper[Series] with CRUDify[Long, Series] {
-  def find_by_id(id: Long) = Series.find(By(Series.series_id, id))
+  def find_by_id(id: Long): Box[Series] = Series.find(By(Series.series_id, id), By(Series.active, true))
   def id_exists(id: Long) = find_by_id(id).isDefined
 
   def save_series(id: Long, name: String) {

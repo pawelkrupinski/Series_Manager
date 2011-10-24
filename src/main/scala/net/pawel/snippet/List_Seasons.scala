@@ -2,11 +2,11 @@ package net.pawel.snippet
 
 import net.pawel.model.{Series, Episode}
 import net.liftweb.util.Helpers._
-import net.liftweb.http.S
 import net.liftweb.http.SHtml._
 import net.liftweb.http.js.JsCmds
 import java.lang.String
 import xml.{Elem, NodeSeq}
+import net.liftweb.http.{SessionVar, S}
 
 class List_Seasons extends Season_Link{
 

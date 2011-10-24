@@ -6,6 +6,8 @@ import java.lang.String
 import net.pawel.injection.Injected
 import com.google.inject.Inject
 import xml.XML
+import net.liftweb.mapper.By
+import net.liftweb.common.Box
 
 object Series_Service extends Injected {
 
@@ -22,12 +24,26 @@ object Series_Service extends Injected {
 
   def fetch_episode(episode_id: Long) = Episode.from(http.urlToXml(tvdb_service_with_key + "/episodes/" + episode_id + "/") \\ "Episode")
 
-  def create_series(series: Series) {
+  def create_inactive(series: Series) {
+    series.active(false)
+    series.save
+  }
+
+  override def hashCode() = 0
+
+  def create_series(seriesId: Long): Box[Series] = {
+    val series: Box[Series] = Series.find(By(Series.id, seriesId))
+    series.map(create_series)
+  }
+
+  def create_series(series: Series): Series = {
     if (Series.id_exists(series.series_id)) {
       throw new IllegalArgumentException("Series " + series.series_id + " already exists.")
     }
-    series.save
     add_episodes(series)
+    series.active(true)
+    series.save
+    series
   }
 
   private def add_episodes(series: Series) = fetch_episodes(series).foreach(_.save)

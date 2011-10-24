@@ -8,7 +8,7 @@ import org.openqa.selenium.firefox.{FirefoxProfile, FirefoxBinary, FirefoxDriver
 import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.ie.InternetExplorerDriver
 import net.liftweb.util.Props
-import java.io.{FileInputStream, File}
+import java.io.File
 import net.liftweb.common.{Box, Full}
 import com.google.inject._
 
