@@ -7,20 +7,20 @@ import Implicits._
 import net.liftweb.common.Box
 
 class Series extends LongKeyedMapper[Series] with IdPK {
-    def getSingleton = Series
-    object name extends MappedPoliteString(this, 128)
-    object series_id extends MappedLong(this)
-    object active extends MappedBoolean(this)
-    def episodes: List[Episode] = Episode.find_by_series_id(series_id)
-    def season(season: Int): List[Episode] = Episode.find_by_series_id_and_season(series_id, season)
+  def getSingleton = Series
+  object name extends MappedPoliteString(this, 128)
+  object series_id extends MappedLong(this)
+  object active extends MappedBoolean(this)
+  def episodes: List[Episode] = Episode.find_by_series_id(series_id)
+  def season(season: Int): List[Episode] = Episode.find_by_series_id_and_season(series_id, season)
 
-    def delete {
-      episodes.foreach(_.delete_!)
-      delete_!
-    }
+  def delete {
+    episodes.foreach(_.delete_!)
+    delete_!
+  }
 
-    def mark_season_watched(season_number: Int, watched: Boolean) = Some(season(season_number).sorted)
-      .map(season => if (watched) season.last else season.head).map(_.mark_watched(watched))
+  def mark_season_watched(season_number: Int, watched: Boolean) = Some(season(season_number).sorted)
+    .map(season => if (watched) season.last else season.head).map(_.mark_watched(watched))
 }
 
 object Series extends Series with LongKeyedMetaMapper[Series] with CRUDify[Long, Series] {
