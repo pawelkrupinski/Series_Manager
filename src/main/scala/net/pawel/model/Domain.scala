@@ -2,7 +2,6 @@ package net.pawel.model
 
 import net.liftweb.mapper._
 import xml.NodeSeq
-import java.text.{ParseException, SimpleDateFormat}
 import Implicits._
 import net.liftweb.common.Box
 
@@ -13,6 +12,8 @@ class Series extends LongKeyedMapper[Series] with IdPK {
   object active extends MappedBoolean(this)
   def episodes: List[Episode] = Episode.find_by_series_id(series_id)
   def season(season: Int): List[Episode] = Episode.find_by_series_id_and_season(series_id, season)
+
+  def last_watched = episodes.sorted.reverse.find(_.watched)
 
   def delete {
     episodes.foreach(_.delete_!)
@@ -37,7 +38,7 @@ object Series extends Series with LongKeyedMetaMapper[Series] with CRUDify[Long,
   def from(xml: NodeSeq) =  new Series().series_id(xml.long("seriesid")).name(xml("SeriesName"))
 }
 
-class Episode extends LongKeyedMapper[Episode] with IdPK {
+class Episode extends LongKeyedMapper[Episode] with IdPK with Ordered[Episode] {
   def getSingleton = Episode
 
   object series_id extends MappedLongForeignKey(this, Series)
@@ -56,6 +57,15 @@ class Episode extends LongKeyedMapper[Episode] with IdPK {
     watched(watched_state)
     save
   }
+
+
+  def compare(that: Episode) = order - that.order
+
+  def order = (season.get * 10000) + number
+
+  def key:(Long, Int, Int) = (series_id.get, season.get, number.get)
+
+  def mark_watched() {mark_watched(!watched.get)}
 
   def mark_watched(watched_state: Boolean) {
     update_watched(watched_state)
