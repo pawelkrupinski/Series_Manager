@@ -24,7 +24,7 @@ class List_Series extends CometActor {
 
   def async_create_series(series: Series) = Creation_Overseer ! Create(series, this)
 
-  def loading = <img/> % ("src" -> "/images/ajax-loader.gif") %("width" -> "15px") % ("height" -> "15px")
+  def loading = <img/> % ("src" -> "/images/ajax-loader.gif") % ("width" -> "15px") % ("height" -> "15px")
 
   def series_link(series: Series) = if (series.active) {link("/series/seasons?series_id=" + series.series_id, () => {}, Text(series.name)) %
       ("id" -> series.series_id)} else { async_create_series(series); List(loading, Text(" " + series.name)) }
