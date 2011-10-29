@@ -5,16 +5,23 @@ import net.liftweb.http.SHtml._
 import net.liftweb.http.js.JsCmds
 import net.pawel.services.Series_Service._
 import net.pawel.model.{Episode, Series}
-import collection.immutable.Map
 import net.liftweb.common.Logger
+import net.liftweb.actor.LiftActor
 
-class Update extends Logger {
+class Update extends LiftActor with Logger {
 
   def render(in: NodeSeq) = ajaxButton("Update", () => { update; JsCmds.Noop})
 
   def update {
-    val series: List[Series] = Series.findAll
-    series.par.flatMap(updateSeries(_))
+    this ! Update
+  }
+
+  case object Update
+
+  protected def messageHandler = {
+    case Update => {
+      Series.findAll.par.flatMap(updateSeries(_))
+    }
   }
 
   def updateSeries(series: Series) = {
@@ -26,13 +33,13 @@ class Update extends Logger {
     def updateEpisode(online_episode: Episode): Option[Episode] =
       existing_episodes.get(online_episode.key) match {
         case Some(existing_episode) => {
-          debug("Existing episode found for series " + existing_episode.series.name + " season " + existing_episode.season +
-          " episode number " + existing_episode.number)
+          debug("Existing episode found for series " + existing_episode.series.name + " season " +
+            existing_episode.season + " episode number " + existing_episode.number)
           existing_episode.update(online_episode)
         }
         case None => {
-          debug("Existing episode not found for series " + online_episode.series.name + " season " + online_episode.season +
-          " episode number " + online_episode.number + ". Adding it.")
+          debug("Existing episode not found for series " + online_episode.series.name + " season " +
+            online_episode.season + " episode number " + online_episode.number + ". Adding it.")
           online_episode.series.last_watched.foreach(episode => if (episode > online_episode) online_episode.watched(true))
         }
 
