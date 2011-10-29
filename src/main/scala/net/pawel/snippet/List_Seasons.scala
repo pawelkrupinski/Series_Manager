@@ -8,7 +8,7 @@ import java.lang.String
 import xml.{Elem, NodeSeq}
 import net.liftweb.http.{SessionVar, S}
 
-class List_Seasons extends Season_Link{
+class List_Seasons extends Season_Link {
 
   def render = {
     val series_id: Long = S.param("series_id").open_!.toLong
