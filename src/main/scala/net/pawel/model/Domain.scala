@@ -53,7 +53,7 @@ class Episode extends LongKeyedMapper[Episode] with IdPK with Ordered[Episode] {
   object watched extends MappedBoolean(this)
   lazy val series: Series = Series.find_by_id(series_id).open_!
 
-  def update_watched(watched_state: Boolean): Unit = {
+  def update_watched(watched_state: Boolean) {
     watched(watched_state)
     save
   }

@@ -10,10 +10,28 @@
     <head>
         <link rel="stylesheet" type="text/css" href="/css/style.css"/>
     </head>
-    <div class="lift:List_Episodes?eager_eval=true">
-        <h2>Series: <span class="seriesName"/><br/>Season: <span class="season"/></h2>
-
-        <div class="lift:embed?what=/episodes"/>
+    <div class="lift:List_Episodes_Snippet">
+        <div class="replace_comet">
+            <h2>Series: <span class="seriesName"/><br/>Season: <span class="season"/></h2>
+            <table>
+                <tr>
+                    <th>Series</th>
+                    <th>Season</th>
+                    <th>Episode</th>
+                    <th>Aired</th>
+                    <th>Name</th>
+                    <th>Watched</th>
+                </tr>
+                <tr class="episodes">
+                    <td class="series_name" />
+                    <td class="season" />
+                    <td class="episode" />
+                    <td class="aired" />
+                    <td class="name"/>
+                    <td class="watched" />
+                </tr>
+            </table>
+        </div>
     </div>
     <script type="text/javascript" language="javascript" src="/js/script.js"></script>
 </div>

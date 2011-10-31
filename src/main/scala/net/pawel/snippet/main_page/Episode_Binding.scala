@@ -7,10 +7,10 @@ import net.liftweb.http.js.JsCmds
 import xml._
 import net.pawel.snippet.Season_Link
 
-trait Episode_Binding extends Season_Link{
+trait Episode_Binding extends Season_Link {
   
   def bindEpisodesCss(episodes: List[Episode]) = episodes.map(episode =>
-    ( ".season *" #> episode.season
+    ".season *" #> episode.season
     & ".episode *" #> episode.number
     & ".aired *" #> episode.aired
     & ".id *" #> episode.episode_id
@@ -19,9 +19,8 @@ trait Episode_Binding extends Season_Link{
     & ".series_name *" #> season_link(episode.series, episode.season, episode.series.name)
     & ".overview *" #> episode.overview
     & ".watched *" #> ajaxCheckbox(episode.watched, watched => {
-    episode.mark_watched(watched)
-    JsCmds.RedirectTo("")
-  })))
+      episode.mark_watched(watched); JsCmds.RedirectTo("")
+    }))
 
   def attachOverview(elem: Elem, overview: String) =
     (elem % ("onmouseover" -> ("tooltip.show('" + overview.replace("'", "\\'") + "')"))
