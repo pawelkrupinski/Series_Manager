@@ -50,20 +50,12 @@ package snippet {
 
 class List_Episodes_Snippet {
   def liftComet: String = {
-    "lift:comet?type=List_Episodes?name=" + S.param("series_id").open_! + ":" + S.param("season").open_! + "?eager_eval=true"
+    "lift:comet?type=List_Episodes?name=" + S.param("series_id").open_! + ":" + S.param("season").open_! +
+        "?eager_eval=true"
   }
 
-  def render(in: NodeSeq): NodeSeq = {
-      new scala.xml.transform.RewriteRule {
-        override def transform(n: Node): Seq[Node] = n match {
-          case elem: Elem if (elem.attribute("class").filter(_.contains(Text("replace_comet"))).isDefined) => {
-            elem % ("class" -> liftComet)
-          }
-          case elem: Elem => elem copy (child = elem.child flatMap (this transform))
-          case other => other
-        }
-      }.transform(in.head)
-    }
-  }
+  def render = ".replace_comet" #> addComet _
+  def addComet(in: NodeSeq): NodeSeq = in match { case elem: Elem => (elem % ("class" -> liftComet)) }
+}
 }
 }
