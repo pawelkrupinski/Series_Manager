@@ -1,16 +1,12 @@
-package net.pawel {
+package net.pawel.comet
 
-import net.pawel.model.{Episode, Series}
+import net.pawel.model.Episode
 import net.liftweb.util.Helpers._
 import net.liftweb.http.SHtml._
 import net.liftweb.http.js.JsCmds
 import xml._
-import net.liftweb.http.{CometActor, S}
-import net.pawel.snippet.{Season_Link, Series_Link}
-
-package comet {
-
-import net.liftweb.actor.LiftActor
+import net.liftweb.http.CometActor
+import net.pawel.snippet.Season_Link
 
 trait Episode_Binding_Comet extends CometActor with Season_Link {
 
@@ -34,10 +30,4 @@ trait Episode_Binding_Comet extends CometActor with Season_Link {
   override def lowPriority = {
     case Mark_Episode_Watched(episode) => episode.mark_watched(); reRender()
   }
-}
-
-
-}
-
-
 }
