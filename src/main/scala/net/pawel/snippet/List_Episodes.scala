@@ -38,19 +38,19 @@ class List_Episodes extends CometActor with Series_Link with Season_Link {
     (elem % ("onmouseover" -> ("tooltip.show('" + overview.replace("'", "\\'") + "')"))
          % ("onmouseout" -> "tooltip.hide()"))
 
+  case class Mark_Episode_Watched(episode: Episode)
+
   override def lowPriority = {
     case Mark_Episode_Watched(episode) => episode.mark_watched(); reRender()
   }
 }
-
-case class Mark_Episode_Watched(episode: Episode)
 }
 
 package snippet {
 
 class List_Episodes_Snippet {
   def liftComet: String = {
-    "lift:comet?type=List_Episodes?name=" + S.param("series_id").open_! + ":" + S.param("season").open_!
+    "lift:comet?type=List_Episodes?name=" + S.param("series_id").open_! + ":" + S.param("season").open_! + "?eager_eval=true"
   }
 
   def render(in: NodeSeq): NodeSeq = {
