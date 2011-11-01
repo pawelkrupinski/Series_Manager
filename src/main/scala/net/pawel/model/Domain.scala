@@ -16,7 +16,7 @@ class Series extends LongKeyedMapper[Series] with IdPK {
   def season(season: Int): List[Episode] = Episode.find_by_series_id_and_season(series_id, season)
   def last_watched_episode: Option[Episode] = Episode.findByKey(last_watched_episode_id)
   def unmark_last_watched = { last_watched_episode_id(Empty); save(); }
-  def mark_last_watched(episode: Episode) = { last_watched_episode_id(episode.id); save(); }
+  def mark_last_watched(episode: Episode) = { last_watched_episode_id(episode.id); save(); episode; }
 
   def delete {
     episodes.foreach(_.delete_!)
@@ -62,15 +62,15 @@ class Episode extends LongKeyedMapper[Episode] with IdPK with Ordered[Episode] w
 
   def key:(Long, Int, Int) = (series_id.get, season.get, number.get)
 
-  def mark_watched() {mark_watched(!watched)}
+  def mark_watched(): Option[Episode] = mark_watched(!watched)
 
-  def mark_watched(watched_state: Boolean) {
+  def mark_watched(watched_state: Boolean): Option[Episode] = {
     debug("Marking " + this + " watched: " + watched_state)
     series.unmark_last_watched
     if (watched_state == true) {
-      series.mark_last_watched(this)
+      Some(series.mark_last_watched(this))
     } else {
-      series.episodes.sorted.reverse.find(_ < this).foreach(episode => series.mark_last_watched(episode))
+      series.episodes.sorted.reverse.find(_ < this).map(episode => series.mark_last_watched(episode))
     }
   }
 
