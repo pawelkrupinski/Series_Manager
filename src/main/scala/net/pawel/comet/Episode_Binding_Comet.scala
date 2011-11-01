@@ -19,7 +19,8 @@ trait Episode_Binding_Comet extends CometActor with Season_Link {
     & ".season *" #> episode.season
     & ".series_name *" #> season_link(episode.series, episode.season, episode.series.name)
     & ".overview *" #> episode.overview
-    & ".watched *" #> ajaxCheckbox(episode.watched, watched => this ! Mark_Episode_Watched(episode)))
+    & ".watched *" #> ajaxCheckbox(episode.watched,
+      watched => this ! Mark_Episode_Watched(episode)))
 
   def attachOverview(elem: Elem, overview: String) =
     (elem % ("onmouseover" -> ("tooltip.show('" + overview.replace("'", "\\'") + "')"))

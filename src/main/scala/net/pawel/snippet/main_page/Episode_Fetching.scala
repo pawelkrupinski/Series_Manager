@@ -1,8 +1,8 @@
 package net.pawel.snippet.main_page
 
-import net.pawel.model.Episode
 import java.util.Date
 import org.joda.time.DateTime
+import net.pawel.model.{Series, Episode}
 
 trait Episode_Fetching {
   implicit def dateToDateTime(date: Date) = new DateTime(date)
@@ -25,6 +25,6 @@ trait Episode_Fetching {
     else firstDate.get.isBefore(secondDate.get)
   })
 
-  def episodes: List[Episode] = Episode.find_unwatched.groupBy(_.series_id.toLong).iterator
-    .map((t: (Long, List[Episode])) => t._2.sortBy(e => e.season * 1000 + e.number).take(2)).toList.flatten
+  def episodes = Series.findAll().flatMap(series => series.episodes.filterNot(_.watched))
+    .groupBy(_.series_id.toLong).values.map(_.sorted.take(2)).flatten.toList
 }

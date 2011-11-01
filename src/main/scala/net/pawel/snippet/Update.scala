@@ -40,7 +40,6 @@ class Update extends LiftActor with Logger {
         case None => {
           debug("Existing episode not found for series " + online_episode.series.name + " season " +
             online_episode.season + " episode number " + online_episode.number + ". Adding it.")
-          online_episode.series.last_watched.foreach(episode => if (episode > online_episode) online_episode.watched(true))
         }
 
           online_episode.save;
