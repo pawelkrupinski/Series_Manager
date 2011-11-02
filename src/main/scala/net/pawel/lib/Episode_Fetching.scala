@@ -1,4 +1,4 @@
-package net.pawel.snippet.main_page
+package net.pawel.lib
 
 import java.util.Date
 import org.joda.time.DateTime

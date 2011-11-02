@@ -1,9 +1,8 @@
 package net.pawel.comet
 
-import net.pawel.snippet.main_page.Episode_Fetching
 import net.liftweb.http.CometActor
-import net.pawel.lib.Updated_Watched
 import net.liftweb.common.Logger
+import net.pawel.lib.{Episode_Fetching, Updated_Watched}
 
 class Recently_Aired extends CometActor with Episode_Fetching with Episode_Binding_Comet with Logger {
   override protected def dontCacheRendering = true
