@@ -6,7 +6,6 @@ import net.liftweb.http.CometActor
 import net.pawel.lib.Updated_Watched
 import net.liftweb.common.Logger
 
-
 class List_Episodes extends CometActor with Series_Link with Episode_Binding_Comet with Logger {
 
   def render = {
@@ -18,12 +17,5 @@ class List_Episodes extends CometActor with Series_Link with Episode_Binding_Com
     ".seriesName" #> series_link(series) &
     ".season" #> season_number &
     ".episodes *" #> bindEpisodesCss(episodes)
-  }
-
-  override def lowPriority = {
-    case Updated_Watched(from, to) => {
-      debug("Updated watched received.")
-      reRender()
-    };
   }
 }

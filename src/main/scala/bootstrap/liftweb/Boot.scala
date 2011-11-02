@@ -57,7 +57,7 @@ class Boot extends Injected {
       def act() {
         Thread.sleep(1000 * 60 * 60)
         while (true) {
-          (new Update).update
+          Update.update
           Thread.sleep(1000 * 60 * 60 * 12)
         }
       }

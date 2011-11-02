@@ -8,12 +8,5 @@ class Recently_Aired extends CometActor with Episode_Fetching with Episode_Bindi
   override protected def dontCacheRendering = true
 
   def render = ".episodes *" #> bindEpisodesCss(recently_aired_episodes)
-  
-  override def lowPriority = {
-    case Updated_Watched(from, to) => {
-      debug("Updated watched received.")
-      reRender()
-    };
-  }
 }
 

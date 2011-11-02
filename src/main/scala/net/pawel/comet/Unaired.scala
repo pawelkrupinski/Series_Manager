@@ -7,13 +7,6 @@ import net.pawel.lib.{Updated_Watched, Episode_Fetching}
 
 class Unaired extends CometActor with Episode_Fetching with Episode_Binding_Comet with Logger {
   def render = ".episodes *" #> bindEpisodesCss(unaired_episodes)
-
-  override def lowPriority = {
-    case Updated_Watched(from, to) => {
-      debug("Updated watched received.")
-      reRender()
-    };
-  }
 }
 
 

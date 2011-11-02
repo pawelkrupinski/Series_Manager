@@ -3,11 +3,11 @@ package net.pawel.comet
 import net.pawel.snippet.Season_Link
 import net.pawel.model.Episode
 import net.liftweb.http.js.JsCmds
-import net.pawel.lib.{Mark_Episode_Watched, Episode_Manager}
 import xml.{Elem, Text}
 import net.liftweb.util.Helpers._
 import net.liftweb.http.SHtml._
 import net.liftweb.http.{CometListener, CometActor}
+import net.pawel.lib.{Updated_Watched, Mark_Episode_Watched, Episode_Manager}
 
 trait Episode_Binding_Comet extends Season_Link with CometListener {
 
@@ -28,4 +28,8 @@ trait Episode_Binding_Comet extends Season_Link with CometListener {
          % ("onmouseout" -> "tooltip.hide()"))
 
   protected def registerWith = Episode_Manager.is
+
+  override def lowPriority = {
+    case Updated_Watched(from, to) => reRender()
+  }
 }

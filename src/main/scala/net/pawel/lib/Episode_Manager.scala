@@ -23,6 +23,7 @@ object Episode_Manager extends SessionVar(new Episode_Manager())
 case class Mark_Episode_Watched(episode: Episode)
 
 case class Updated_Watched(from: Option[Episode], to: Option[Episode])
+
 object Updated_Watched {
   def from(fromEpisode: Option[Episode]) = new {
     def to(toEpisode: Option[Episode]) = new Updated_Watched(fromEpisode, toEpisode)
