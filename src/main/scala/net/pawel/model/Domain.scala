@@ -15,8 +15,8 @@ class Series extends LongKeyedMapper[Series] with IdPK {
   def episodes: List[Episode] = Episode.find_by_series_id(series_id)
   def season(season: Int): List[Episode] = Episode.find_by_series_id_and_season(series_id, season)
   def last_watched_episode: Option[Episode] = Episode.findByKey(last_watched_episode_id)
-  def unmark_last_watched = { last_watched_episode_id(Empty); save(); }
-  def mark_last_watched(episode: Episode) = { last_watched_episode_id(episode.id); save(); episode; }
+  def unmark_last_watched = last_watched_episode_id(Empty)
+  def mark_last_watched(episode: Episode) = { last_watched_episode_id(episode.id); episode; }
 
   def delete {
     episodes.foreach(_.delete_!)
@@ -54,7 +54,8 @@ class Episode extends LongKeyedMapper[Episode] with IdPK with Ordered[Episode] w
   object overview extends MappedText(this)
   object last_updated extends MappedLong(this)
   lazy val series: Series = Series.find_by_id(series_id).open_!
-  def watched = series.last_watched_episode.map(_ >= this).getOrElse(false)
+  def watched: Boolean = watched(series.last_watched_episode)
+  def watched(last_watched: Option[Episode]): Boolean = last_watched.map(_ >= this).getOrElse(false)
 
   def compare(that: Episode) = order - that.order
 
@@ -62,18 +63,20 @@ class Episode extends LongKeyedMapper[Episode] with IdPK with Ordered[Episode] w
 
   def key:(Long, Int, Int) = (series_id.get, season.get, number.get)
 
-  def mark_watched(): Option[Episode] = mark_watched(!watched)
+  def mark_watched(): Option[Episode] = mark_watched(!watched(series.last_watched_episode))
 
   def isLastWatched = series.last_watched_episode.map(last_watched => last_watched.id == this.id).getOrElse(false)
 
   def mark_watched(watched_state: Boolean): Option[Episode] = {
     debug("Marking " + this + " watched: " + watched_state)
     series.unmark_last_watched
-    if (watched_state == true) {
+    val result = if (watched_state == true) {
       Some(series.mark_last_watched(this))
     } else {
       series.episodes.sorted.reverse.find(_ < this).map(episode => series.mark_last_watched(episode))
     }
+    series.save()
+    result
   }
 
   def update(other: Episode): Option[Episode] =

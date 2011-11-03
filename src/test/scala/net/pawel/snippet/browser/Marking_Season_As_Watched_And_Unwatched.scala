@@ -36,7 +36,7 @@ class Marking_Season_As_Watched_And_Unwatched extends Uses_Integration_Configura
     val series: Series = Series_Service.find_series(series_name).head
     Series_Service.create_series(series)
     series.season(5).sorted.last.mark_watched(true)
-    assertTrue(series.episodes.forall(_.watched))
+    assertTrue(series.episodes.forall(_.watched(series.last_watched_episode)))
 
     driver.get(server_config.url);
     driver.findElement(By.xpath("//*[text()='List series']")).click

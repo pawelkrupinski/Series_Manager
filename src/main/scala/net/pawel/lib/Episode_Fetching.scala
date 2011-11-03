@@ -2,9 +2,13 @@ package net.pawel.lib
 
 import java.util.Date
 import org.joda.time.DateTime
-import net.pawel.model.{Series, Episode}
+import net.pawel.model.Episode
+import net.liftweb.http.CometListener
+import net.liftweb.common.Logger
 
-trait Episode_Fetching {
+trait Episode_Fetching extends CometListener with Logger {
+  var episodes: List[Episode] = Nil
+
   implicit def dateToDateTime(date: Date) = new DateTime(date)
 
   def now = new DateTime
@@ -25,6 +29,9 @@ trait Episode_Fetching {
     else firstDate.get.isBefore(secondDate.get)
   })
 
-  def episodes = Series.findAll().flatMap(series => series.episodes.filterNot(_.watched))
-    .groupBy(_.series_id.toLong).values.map(_.sorted.take(2)).flatten.toList
+  protected def registerWith = Episode_Provider.is
+
+  override def lowPriority = {
+    case list: List[Episode] => episodes = list; reRender();
+  }
 }

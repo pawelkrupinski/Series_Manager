@@ -14,10 +14,11 @@ class List_Seasons extends Season_Link {
     val series_id: Long = S.param("series_id").open_!.toLong
     val series: Series = Series.find_by_id(series_id).open_!
     val seasons: List[Int] = Episode.find_by_series_id(series_id).map(_.season.toString.toInt).toSet.toList.sorted
+    val last_watched_episode = series.last_watched_episode
 
     def bindEpisodes = seasons.map(season_number =>
       {
-        val checkbox: Elem = ajaxCheckbox(series.season(season_number).forall(_.watched), watched => {
+        val checkbox: Elem = ajaxCheckbox(series.season(season_number).forall(_.watched(last_watched_episode)), watched => {
           series.mark_season_watched(season_number, watched);
           JsCmds.RedirectTo("")
         })

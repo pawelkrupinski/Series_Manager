@@ -70,13 +70,15 @@ class Boot extends Injected {
     // Build SiteMap
     val menuBuilder = List.newBuilder[Menu]
 
+    val loggedIn = If(() => User.loggedIn_?, () => RedirectResponse("/user_mgt/login"))
+
     menuBuilder ++= List[Menu](
-      Menu.i("Home") / "index",
-      Menu.i("Find series") / "series" / "search",
-      Menu.i("List series") / "series" / "list",
-      Menu(Loc("List episodes", List("episode", "list"), "List episodes", Hidden)),
-      Menu(Loc("Results", List("series", "results"), "Results", Hidden)),
-      Menu(Loc("Seasons", List("series", "seasons"), "Seasons", Hidden))
+      Menu.i("Home") / "index" >> loggedIn,
+      Menu.i("Find series") / "series" / "search" >> loggedIn,
+      Menu.i("List series") / "series" / "list" >> loggedIn,
+      Menu(Loc("List episodes", List("episode", "list"), "List episodes", Hidden, loggedIn)),
+      Menu(Loc("Results", List("series", "results"), "Results", Hidden, loggedIn)),
+      Menu(Loc("Seasons", List("series", "seasons"), "Seasons", Hidden, loggedIn))
     )
     menuBuilder ++= User.sitemap
 
