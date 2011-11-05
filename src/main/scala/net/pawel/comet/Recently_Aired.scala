@@ -2,10 +2,23 @@ package net.pawel.comet
 
 import net.liftweb.http.CometActor
 import net.liftweb.common.Logger
-import net.pawel.lib.Episode_Fetching
+import net.pawel.lib.{Remove_Listener, Add_Listener, Episode_Manager, Episode_Fetching}
 
 class Recently_Aired extends CometActor with Episode_Fetching with Episode_Binding_Comet with Logger {
-  override protected def dontCacheRendering = true
+
+  var userId: Long = _
+
+  override protected def localShutdown() {
+    super.localShutdown()
+    Episode_Manager ! Remove_Listener(this, userId)
+  }
+
+  override protected def localSetup() {
+    super.localSetup()
+    val params: Array[String] = name.open_!.split(':')
+    userId = params(0).toLong
+    Episode_Manager ! Add_Listener(this, userId)
+  }
 
   def render = {
     debug("Rendering. Episodes: " + episodes)

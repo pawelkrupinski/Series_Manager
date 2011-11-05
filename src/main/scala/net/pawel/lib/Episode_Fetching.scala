@@ -29,7 +29,10 @@ trait Episode_Fetching extends CometListener with Logger {
     else firstDate.get.isBefore(secondDate.get)
   })
 
-  protected def registerWith = Episode_Provider.is
+  protected def registerWith = {
+    debug("Registering with")
+    Episode_Provider.is
+  }
 
   override def lowPriority = {
     case list: List[Episode] => episodes = list; reRender();

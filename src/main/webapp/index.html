@@ -11,19 +11,22 @@
         <link rel="stylesheet" type="text/css" href="/css/style.css"/>
     </head>
 
-    <div class="lift:comet?type=Recently_Aired?eager_eval=true">
-        <h2>Recently aired</h2>
-        <div class="lift:embed?what=/episodes"/>
-    </div>
+    <div class="lift:List_Episodes_Snippet.main">
 
-    <div class="lift:comet?type=Unwatched?eager_eval=true">
-        <h2>Unwatched episodes</h2>
-        <div class="lift:embed?what=/episodes"/>
-    </div>
+        <div class="replace_comet" comet="lift:comet?type=Recently_Aired?eager_eval=true">
+            <h2>Recently aired</h2>
+            <div class="lift:embed?what=/episodes"/>
+        </div>
 
-    <div class="lift:comet?type=Unaired?eager_eval=true">
-        <h2>Unaired episodes</h2>
-        <div class="lift:embed?what=/episodes"/>
+        <div class="replace_comet" comet="lift:comet?type=Unwatched?eager_eval=true">
+            <h2>Unwatched episodes</h2>
+            <div class="lift:embed?what=/episodes"/>
+        </div>
+
+        <div class="replace_comet" comet="lift:comet?type=Unaired?eager_eval=true">
+            <h2>Unaired episodes</h2>
+            <div class="lift:embed?what=/episodes"/>
+        </div>
     </div>
 
     <span class="lift:Update"/>

@@ -22,6 +22,7 @@ class List_Episodes extends CometActor with Series_Link with Episode_Binding_Com
   }
 
   override protected def localShutdown() {
+    super.localShutdown()
     Episode_Manager ! Remove_Listener(this, userId)
   }
 
