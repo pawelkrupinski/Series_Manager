@@ -38,7 +38,7 @@ object Boot extends Injected {
     // Use Lift's Mapper ORM to populate the database
     // you don't need to use Mapper to use Lift... use
     // any ORM you want
-    Boot.schemify
+//    Boot.schemify
   }
 }
 

@@ -8,11 +8,6 @@ class Recently_Aired extends CometActor with Episode_Fetching with Episode_Bindi
 
   var userId: Long = _
 
-  override protected def localShutdown() {
-    super.localShutdown()
-    Episode_Manager ! Remove_Listener(this, userId)
-  }
-
   override protected def localSetup() {
     super.localSetup()
     val params: Array[String] = name.open_!.split(':')
@@ -20,9 +15,14 @@ class Recently_Aired extends CometActor with Episode_Fetching with Episode_Bindi
     Episode_Manager ! Add_Listener(this, userId)
   }
 
+  override protected def localShutdown() {
+    super.localShutdown()
+    Episode_Manager ! Remove_Listener(this, userId)
+  }
+
   def render = {
     debug("Rendering. Episodes: " + episodes)
-    ".episodes *" #> bindEpisodesCss(recently_aired_episodes)
+    ".episodes *" #> bindEpisodesCss(recently_aired_episodes, userId)
   }
 }
 

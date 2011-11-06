@@ -49,7 +49,9 @@ case class Add_Listener(actor: LiftActor, userId: Long)
 
 case class Remove_Listener(actor: LiftActor, userId: Long)
 
-case class Updated_Watched(from: Option[Episode], to: Option[Episode])
+case class Updated_Watched(from: Option[Episode], to: Option[Episode]) {
+  def series_id: Long = from.map(_.series_id).orElse(to.map(_.series_id)).get
+}
 
 object Updated_Watched {
   def from(fromEpisode: Option[Episode]) = new {

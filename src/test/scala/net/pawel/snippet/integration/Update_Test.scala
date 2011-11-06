@@ -13,8 +13,6 @@ import com.novocode.junit.TestMarker
 
 class Update_Test extends Uses_Integration_Configuration with Prepare_Orm with TestMarker {
 
-  val update_service: Update = new Update
-
   var series: Series = _
 
   @Before
@@ -26,7 +24,7 @@ class Update_Test extends Uses_Integration_Configuration with Prepare_Orm with T
   @Test
   def Update_Doesnt_Change_Anything_If_Online_Episodes_Are_The_Same_As_Local {
     val episodes_before_update: List[Episode] = series.episodes
-    update_service.update
+    Update.update
     val episodes_after_update: List[Episode] = series.episodes
     assertThat(episodes_after_update, is(episodes_before_update))
   }
@@ -39,7 +37,7 @@ class Update_Test extends Uses_Integration_Configuration with Prepare_Orm with T
 
     assertThat(series.episodes, is(episodes.filterNot(_ == fifth_episode)))
 
-    update_service.update
+    Update.update
 
     val zipped: List[(Episode, Episode)] = episodes.zip(series.episodes)
     val significant_pair: (Episode, Episode) = zipped(4)
@@ -65,7 +63,7 @@ class Update_Test extends Uses_Integration_Configuration with Prepare_Orm with T
     fifth_episode.aired(null)
     fifth_episode.save
 
-    update_service.update
+    Update.update
 
     val episode_after_update: Episode = series.episodes(4)
     assertThat(episode_after_update.name.toString, is(name))

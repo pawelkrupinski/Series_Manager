@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentMap
 trait Episode_Binding_Comet extends Season_Link {
 
   def bindEpisodesCss(episodes: List[Episode], userId: Long = 0) = {
-    val lastEpisodes: ConcurrentMap[Series, Option[Episode]] = new MapMaker().makeComputingMap(
+    val lastWatchedEpisodes: ConcurrentMap[Series, Option[Episode]] = new MapMaker().makeComputingMap(
       new Function[Series, Option[Episode]] { def apply(series: Series) = series.last_watched_episode })
 
     episodes.map(episode =>
@@ -26,7 +26,7 @@ trait Episode_Binding_Comet extends Season_Link {
         & ".season *" #> episode.season
         & ".series_name *" #> season_link(episode.series, episode.season, episode.series.name)
         & ".overview *" #> episode.overview
-        & ".watched *" #> ajaxCheckbox(episode.watched(lastEpisodes.get(episode.series)),
+        & ".watched *" #> ajaxCheckbox(episode.watched(lastWatchedEpisodes.get(episode.series)),
         watched => Episode_Manager ! Mark_Episode_Watched(episode, userId)))
   }
 
