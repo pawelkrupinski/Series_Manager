@@ -7,20 +7,20 @@ import http._
 import sitemap._
 import Loc._
 import mapper._
-import net.pawel.model.{Episode, Series, User}
 import net.pawel.snippet._
 import com.google.inject.Inject
 import net.pawel.injection.{Database_Connection_Settings, Injected}
 import actors.Actor
 import util._
+import net.pawel.model._
 
 object Boot extends Injected {
   @Inject
   var database_settings: Database_Connection_Settings = _
 
-  def schemify = Schemifier.schemify(true, Schemifier.infoF _, User, Series, Episode)
+  def schemify = Schemifier.schemify(true, Schemifier.infoF _, User, Series, Episode, ExtSession)
 
-  def destroy = Schemifier.destroyTables_!!(Schemifier.infoF _, User, Series, Episode)
+  def destroy = Schemifier.destroyTables_!!(Schemifier.infoF _, User, Series, Episode, ExtSession)
 
   def set_up_orm(set_vendor: ProtoDBVendor => Unit) {
     if (!DB.jndiJdbcConnAvailable_?) {
@@ -38,7 +38,7 @@ object Boot extends Injected {
     // Use Lift's Mapper ORM to populate the database
     // you don't need to use Mapper to use Lift... use
     // any ORM you want
-//    Boot.schemify
+    Boot.schemify
   }
 }
 
@@ -81,6 +81,14 @@ class Boot extends Injected {
       Menu(Loc("Seasons", List("series", "seasons"), "Seasons", Hidden, loggedIn))
     )
     menuBuilder ++= User.sitemap
+//
+//    LiftRules.liftRequest.append {
+//      case Req("classpath" :: _, _, _) => true
+//      case Req("ajax_request" :: _, _, _) => true
+//      case Req("favicon" :: Nil, "ico", GetRequest) => false
+//      case Req(_, "css", GetRequest) => false
+//      case Req(_, "js", GetRequest) => false
+//    }
 
     // set the sitemap.  Note if you don't want access control for
     // each page, just comment this line out.
@@ -102,5 +110,9 @@ class Boot extends Injected {
 
     // Make a transaction span the whole HTTP request
     S.addAround(DB.buildLoanWrapper)
+    LiftRules.earlyInStateful.append(ExtSession.testCookieEarlyInStateful)
+
+//    LiftRules.dispatch.append(MyVendor.dispatchPF)
+//    LiftRules.snippets.append(MyVendor.snippetPF)
   }
 }
