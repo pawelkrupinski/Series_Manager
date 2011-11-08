@@ -11,12 +11,6 @@ class Unaired extends CometActor with Episode_Fetching with Episode_Binding_Come
     super.localSetup()
     val params: Array[String] = name.open_!.split(':')
     userId = params(0).toLong
-    Episode_Manager ! Add_Listener(this, userId)
-  }
-
-  override protected def localShutdown() {
-    super.localShutdown()
-    Episode_Manager ! Remove_Listener(this, userId)
   }
 
   def render = ".episodes *" #> bindEpisodesCss(unaired_episodes, userId)

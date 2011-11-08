@@ -1,24 +1,19 @@
 package net.pawel.lib
 
-import net.liftweb.http.ListenerManager
 import net.pawel.model.Episode
 import net.liftweb.actor.LiftActor
 import net.liftweb.common.Logger
 
-object Episode_Manager extends ListenerManager with LiftActor with Logger {
+object Episode_Manager extends LiftActor with Logger {
   var listeners = Map[Long, Set[LiftActor]]()
 
-  def listenersFor(userId: Long): Set[LiftActor] = {
-    listeners.get(userId).getOrElse(Set.empty)
-  }
-
-  override protected def lowPriority = {
+  override protected def messageHandler = {
     case Mark_Episode_Watched(episode, userId) => {
       val from: Option[Episode] = episode.series.last_watched_episode
       val to: Option[Episode] = episode.mark_watched()
       debug("Updating watched episode from " + from + " to " + to)
-      updateListeners(Updated_Watched.from(from).to(to))
-      updateListeners(userId, Updated_Watched.from(from).to(to))
+      val updated: Updated_Watched = Updated_Watched.from(from).to(to)
+      updateListeners(userId, updated)
     }
 
     case Add_Listener(actor, userId) => {
@@ -36,11 +31,13 @@ object Episode_Manager extends ListenerManager with LiftActor with Logger {
     }
   }
 
+  def listenersFor(userId: Long): Set[LiftActor] = {
+    listeners.get(userId).getOrElse(Set.empty)
+  }
+
   def updateListeners(userId: Long, message: Any) {
     listenersFor(userId).foreach(_ ! message)
   }
-
-  protected def createUpdate = None
 }
 
 case class Mark_Episode_Watched(episode: Episode, userId: Long)

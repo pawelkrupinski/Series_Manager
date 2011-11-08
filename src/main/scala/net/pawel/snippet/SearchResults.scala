@@ -24,7 +24,9 @@ class SearchResults {
 
   def toSeriesRow(series: Series) = if (Series.id_exists(series.series_id)) Text(series.name) else addSeriesLink(series)
 
-  def addSeriesLink(series: Series) = a(() => {create_inactive(series); RedirectTo("/series/list")},
+  def addSeriesLink(series: Series) = a(() => {
+    create_inactive(series);
+    RedirectTo("/series/list")},
     Text(series.name)) % ("id" -> series.series_id.toString)
 
   def listSeries = S.session.map(session => session.findComet("List_Series")).openOr(Nil)
