@@ -1,13 +1,16 @@
 package net.pawel.lib
 
 import net.liftweb.actor.LiftActor
-import net.liftweb.http.{ListenerManager, SessionVar}
 import net.liftweb.common.Logger
 import net.pawel.model.{User, Series, Episode}
+import net.liftweb.http.{S, LiftSession, ListenerManager, SessionVar}
 
 class Episode_Provider extends LiftActor with ListenerManager with Logger {
   val userId: Long = User.currentUser.open_!.id
   Episode_Manager ! Add_Listener(this, userId)
+
+  println(S.session)
+  S.session.foreach(_.addSessionCleanup(a => Episode_Manager ! Remove_Listener(Episode_Provider.this, userId)))
 
   var episodes = episodes_fetch
 
@@ -24,9 +27,7 @@ class Episode_Provider extends LiftActor with ListenerManager with Logger {
   protected def createUpdate = episodes
 }
 
-object Episode_Provider extends SessionVar[Episode_Provider](new Episode_Provider) {
-
-}
+object Episode_Provider extends SessionVar[Episode_Provider](new Episode_Provider)
 
 
 

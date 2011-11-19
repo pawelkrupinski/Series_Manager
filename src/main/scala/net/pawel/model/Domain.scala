@@ -63,7 +63,7 @@ class Episode extends LongKeyedMapper[Episode] with IdPK with Ordered[Episode] w
 
   def key:(Long, Int, Int) = (series_id.get, season.get, number.get)
 
-  def mark_watched(): Option[Episode] = mark_watched(!watched(series.last_watched_episode))
+  def mark_watched(last_watched: Option[Episode]): Option[Episode] = mark_watched(!watched(last_watched))
 
   def isLastWatched = series.last_watched_episode.map(last_watched => last_watched.id == this.id).getOrElse(false)
 

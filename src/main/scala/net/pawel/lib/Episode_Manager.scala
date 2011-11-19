@@ -10,10 +10,9 @@ object Episode_Manager extends LiftActor with Logger {
   override protected def messageHandler = {
     case Mark_Episode_Watched(episode, userId) => {
       val from: Option[Episode] = episode.series.last_watched_episode
-      val to: Option[Episode] = episode.mark_watched()
+      val to: Option[Episode] = episode.mark_watched(from)
       debug("Updating watched episode from " + from + " to " + to)
-      val updated: Updated_Watched = Updated_Watched.from(from).to(to)
-      updateListeners(userId, updated)
+      updateListeners(userId, Updated_Watched.from(from).to(to))
     }
 
     case Add_Listener(actor, userId) => {

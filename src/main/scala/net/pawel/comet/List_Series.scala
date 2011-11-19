@@ -9,7 +9,6 @@ import net.liftweb.http.CometActor
 import net.pawel.services.Series_Service._
 import net.liftweb.actor.LiftActor
 import net.liftweb.common.Logger
-import net.liftweb.common.Logger._
 
 class List_Series extends CometActor with Logger {
 
