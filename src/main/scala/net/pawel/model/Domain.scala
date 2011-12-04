@@ -81,8 +81,14 @@ class Episode extends LongKeyedMapper[Episode] with IdPK with Ordered[Episode] w
 
   def update(other: Episode): Option[Episode] =
     if (other.last_updated > last_updated) {
+      debug("Deleting episode " + this + " and replacing it with " + other)
+      val last_watched: Option[Episode] = series.last_watched_episode
       delete_!
       other.save
+      if (last_watched == Some(this)) {
+        series.mark_last_watched(other)
+        series.save()
+      }
       Some(other)
     } else None
 

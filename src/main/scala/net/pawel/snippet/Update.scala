@@ -19,13 +19,18 @@ object Update extends LiftActor with Logger with ListenerManager {
   protected def createUpdate = None
 
   def update {
-    this ! Update
+    this ! Update()
   }
 
-  case object Update
+  def update(actor: LiftActor) {
+    this ! Update(List(actor))
+  }
+
+  private case class Update(args: List[LiftActor] = Nil)
+  case object Updated
 
   override protected def messageHandler = {
-    case Update => Series.findAll.par.foreach(updateSeries(_))
+    case Update(actors) => { Series.findAll.par.foreach(updateSeries(_)); actors.foreach(_ ! Updated); }
   }
 
   def toKey(episode: Episode): (Long, Int, Int) = (episode.series_id, episode.season, episode.number)
@@ -60,7 +65,9 @@ object Update extends LiftActor with Logger with ListenerManager {
 
   def removeDuplicates(episodes: List[Episode]) {
     val remaining: Episode = episodes.find(_.isLastWatched).getOrElse(episodes.head)
-    episodes.filterNot(_.id == remaining.id).foreach(_.delete_!)
+    val deleting: List[Episode] = episodes.filterNot(_.id == remaining.id)
+    debug("Deleting duplicates: " + deleting)
+    deleting.foreach(_.delete_!)
   }
 }
 
