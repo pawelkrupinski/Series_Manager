@@ -61,6 +61,7 @@ object Update extends LiftActor with Logger with ListenerManager {
     online_episodes.par.foreach(updateEpisode)
     val bySeriesSeasonAndNumber: Map[(Long, Int, Int), List[Episode]] = Episode.findAll().groupBy(toKey)
     bySeriesSeasonAndNumber.values.filter(_.size > 1).par.foreach(removeDuplicates)
+    updateListeners(Series_Updated(series))
   }
 
   def removeDuplicates(episodes: List[Episode]) {
@@ -73,4 +74,5 @@ object Update extends LiftActor with Logger with ListenerManager {
 
 case class Episode_Updated(episode: Episode)
 case class Episode_Added(episode: Episode)
+case class Series_Updated(series: Series)
 
