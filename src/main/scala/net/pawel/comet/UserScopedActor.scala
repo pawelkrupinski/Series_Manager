@@ -1,8 +1,6 @@
 package net.pawel.comet
 
 import net.liftweb.http.CometActor
-import net.liftweb.common.Logger
-import net.pawel.lib.Episode_Fetching
 
 trait UserScopedActor extends CometActor {
   var userId: Long = _

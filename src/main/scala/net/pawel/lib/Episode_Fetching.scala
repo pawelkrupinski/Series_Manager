@@ -32,6 +32,6 @@ trait Episode_Fetching extends CometListener with Logger {
   protected def registerWith = Episode_Provider.is
 
   override def lowPriority = {
-    case list: List[Episode] => episodes = list; reRender();
+    case list: List[Episode] => debug("Receiving episodes: " + episodes); episodes = list; reRender();
   }
 }

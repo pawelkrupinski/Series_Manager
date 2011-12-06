@@ -1,11 +1,7 @@
 package net.pawel.comet
 
-import net.liftweb.http.CometActor
-import net.liftweb.common.Logger
-import net.pawel.lib.Episode_Fetching
-
-class Unaired extends CometActor with UserScopedActor with Episode_Fetching with Episode_Binding_Comet with Logger {
-  def render = ".episodes *" #> bindEpisodesCss(unaired_episodes, userId)
+class Unaired extends HomePageEpisodes {
+  def episodes_to_render = unaired_episodes
 }
 
 
