@@ -1,20 +1,23 @@
 package net.pawel.lib
 
-import net.liftweb.actor.LiftActor
 import net.liftweb.common.Logger
-import net.pawel.model.{User, Series, Episode}
+import net.pawel.model.{Series, Episode}
 import net.liftweb.http._
 import net.pawel.snippet.{Series_Updated, Update}
 
-class Episode_Provider extends LiftActor with ListenerManager with Logger {
-  val userId: Long = User.currentUser.open_!.id
-  Episode_Manager ! Add_Listener(this, userId)
-  Update ! AddAListener(this, {case _ => true })
+trait Episode_Provider extends CometActor with Registers_User with Logger {
+  def register(userId: Long) {
+    super.localSetup();
+    debug("Registering for user" + userId)
+    Episode_Manager ! Add_Listener(this, userId)
+    Update ! AddAListener(this, {case _ => true })
+  }
 
-  S.session.foreach(_.addSessionCleanup(a => {
+  def unregister(userId: Long) {
+    super.localShutdown();
     Episode_Manager ! Remove_Listener(Episode_Provider.this, userId)
     Update ! RemoveAListener(this)
-  }))
+  }
 
   var episodes = episodes_fetch
 
@@ -27,15 +30,10 @@ class Episode_Provider extends LiftActor with ListenerManager with Logger {
     episodes = episodes_fetch
   }
 
-  override protected def lowPriority = {
-    case Updated_Watched(from, to) => refresh_episodes(); updateListeners();
-    case Series_Updated(series) => refresh_episodes(); updateListeners();
+  override def lowPriority = {
+    case Updated_Watched(from, to) => refresh_episodes(); reRender();
+    case Series_Updated(series) => refresh_episodes(); reRender();
   }
-
-  protected def createUpdate = episodes
 }
-
-object Episode_Provider extends SessionVar[Episode_Provider](new Episode_Provider)
-
 
 

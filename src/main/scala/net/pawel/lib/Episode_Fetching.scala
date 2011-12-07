@@ -3,12 +3,9 @@ package net.pawel.lib
 import java.util.Date
 import org.joda.time.DateTime
 import net.pawel.model.Episode
-import net.liftweb.http.CometListener
 import net.liftweb.common.Logger
 
-trait Episode_Fetching extends CometListener with Logger {
-  var episodes: List[Episode] = Nil
-
+trait Episode_Fetching extends Episode_Provider with Logger {
   implicit def dateToDateTime(date: Date) = new DateTime(date)
 
   def now = new DateTime
@@ -28,10 +25,4 @@ trait Episode_Fetching extends CometListener with Logger {
     else if (firstDate.isEmpty) false
     else firstDate.get.isBefore(secondDate.get)
   })
-
-  protected def registerWith = Episode_Provider.is
-
-  override def lowPriority = {
-    case list: List[Episode] => debug("Receiving episodes: " + episodes); episodes = list; reRender();
-  }
 }
