@@ -22,15 +22,11 @@ trait Episode_Binding_Comet extends Season_Link {
         & ".episode *" #> episode.number
         & ".aired *" #> episode.aired
         & ".id *" #> episode.episode_id
-        & ".name *" #> attachOverview(a(Text(episode.name), JsCmds.Noop), episode.overview)
+        & ".name *" #> a(Text(episode.name), JsCmds.Noop, "rel" -> "tooltip", "title" -> episode.overview.get)
         & ".season *" #> episode.season
         & ".series_name *" #> season_link(episode.series, episode.season, episode.series.name)
         & ".overview *" #> episode.overview
         & ".watched *" #> ajaxCheckbox(episode.watched(lastWatchedEpisodes.get(episode.series)),
         watched => Episode_Manager ! Mark_Episode_Watched(episode, userId)))
   }
-
-  def attachOverview(elem: Elem, overview: String) =
-    (elem % ("onmouseover" -> ("tooltip.show('" + overview.replace("'", "\\'") + "')"))
-         % ("onmouseout" -> "tooltip.hide()"))
 }
