@@ -17,7 +17,7 @@ seq(webSettings: _*)
 libraryDependencies += "org.mortbay.jetty" % "jetty" % "6.1.26" % "container"
 
 libraryDependencies ++= {
-  val liftVersion = "2.4-M4" // Put the current/latest lift version here
+  val liftVersion = "2.4" // Put the current/latest lift version here
   Seq(
     "net.liftweb" %% "lift-webkit" % liftVersion % "compile->default",
     "net.liftweb" %% "lift-mapper" % liftVersion % "compile->default",
