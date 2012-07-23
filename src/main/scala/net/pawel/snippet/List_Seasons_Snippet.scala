@@ -10,7 +10,7 @@ class List_Seasons_Snippet extends Logger {
   def render = ".replace_comet" #> addComet _
 
   def addComet(in: NodeSeq): NodeSeq = in match { case elem: Elem => (elem % ("class" -> liftComet("List_Seasons", cometActorName))) }
-  def liftComet(className: String, name: String) = "lift:comet?type=" + className + "?eager_eval=true?name=" + name;
+  def liftComet(className: String, name: String) = "lift:comet?type=" + className + "?eager_eval=true?name=" + name
   def cometActorName = userId + ":" + S.param("series_id").open_!
   def userId = User.currentUser.open_!.id.toString()
 

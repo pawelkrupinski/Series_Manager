@@ -16,6 +16,7 @@ class List_Episodes extends CometActor with Series_Link with Episode_Binding_Com
     info = new List_Episodes_Info(params(0).toLong, Series.find_by_id(params(1).toLong).open_!, params(2).toInt)
     Episode_Manager ! Add_Listener(this, info.user_id)
     Update ! AddAListener(this, { case _ => true })
+    debug("Starting up actor: " + name)
   }
 
   override protected def localShutdown() {

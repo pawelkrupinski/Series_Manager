@@ -2,7 +2,7 @@ package net.pawel.comet
 
 import net.pawel.snippet.Season_Link
 import net.liftweb.http.js.JsCmds
-import xml.{Elem, Text}
+import xml.Text
 import net.liftweb.util.Helpers._
 import net.liftweb.http.SHtml._
 import net.pawel.lib.{Mark_Episode_Watched, Episode_Manager}

@@ -1,6 +1,7 @@
 package bootstrap.liftweb
 
 import net.liftweb._
+import common.Full
 import db.ProtoDBVendor
 import common._
 import http._
@@ -11,6 +12,7 @@ import net.pawel.snippet._
 import com.google.inject.Inject
 import net.pawel.injection.{Database_Connection_Settings, Injected}
 import actors.Actor
+import sitemap.Loc.If
 import util._
 import net.pawel.model._
 
@@ -78,7 +80,8 @@ class Boot extends Injected {
       Menu.i("List series") / "series" / "list" >> loggedIn,
       Menu(Loc("List episodes", List("episode", "list"), "List episodes", Hidden, loggedIn)),
       Menu(Loc("Results", List("series", "results"), "Results", Hidden, loggedIn)),
-      Menu(Loc("Seasons", List("series", "seasons"), "Seasons", Hidden, loggedIn))
+      Menu(Loc("Seasons", List("series", "seasons"), "Seasons", Hidden, loggedIn)),
+      Menu(Loc("Season_list", List("series", "series"), "Seasons", Hidden, loggedIn))
     )
     menuBuilder ++= User.sitemap
 //
@@ -111,8 +114,5 @@ class Boot extends Injected {
     // Make a transaction span the whole HTTP request
     S.addAround(DB.buildLoanWrapper)
     LiftRules.earlyInStateful.append(ExtSession.testCookieEarlyInStateful)
-
-//    LiftRules.dispatch.append(MyVendor.dispatchPF)
-//    LiftRules.snippets.append(MyVendor.snippetPF)
   }
 }
